@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/md5"
 	"net/http"
 	"fmt"
 	"time"
@@ -34,5 +35,12 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	seed := []byte(player1.Name + player2.Name + string(time.Now().UnixNano()))
+	tokenString := fmt.Sprintf("%x", md5.Sum(seed))
+
+	fmt.Fprintf(w, "%s\n", tokenString)
 	fmt.Fprintf(w, "%s\n%s\n", player1.Name, player2.Name)
+
+	token := Token{Token: tokenString, Player1_id: player1.ID, Player2_id: player2.ID}
+	db.Create(&token)
 }

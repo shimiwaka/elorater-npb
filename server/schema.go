@@ -70,7 +70,7 @@ type Settings struct{
 
 type Token struct {
 	gorm.Model
-	Player1_id int
-	Player2_id int
-	token string
+	Player1_id uint
+	Player2_id uint
+	Token string
 }
