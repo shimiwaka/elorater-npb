@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"crypto/md5"
 	"net/http"
 	"fmt"
@@ -9,6 +11,22 @@ import (
 )
 
 type pickUpHandler struct{}
+
+type PickUpResponse struct {
+	Token string			`json:"token"`
+	Player1 PickUpPlayer	`json:"player1"`
+	Player2 PickUpPlayer	`json:"player2"`
+}
+
+type PickUpPlayer struct {
+	Name string						`json:"name"`
+	Birth string					`json:"birth"`
+	BT string						`json:"bt"`
+	PitchingCareerHigh PitchingStat	`json:"pitchingCareerHigh"`
+	BattingCareerHigh BattingStat	`json:"battingCareerHigh"`
+	PitchingTotal PitchingStat		`json:"pitchingTotal"`
+	BattingTotal BattingStat		`json:"battingTotal"`
+}
 
 func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var count int
@@ -38,8 +56,21 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	seed := []byte(player1.Name + player2.Name + string(time.Now().UnixNano()))
 	tokenString := fmt.Sprintf("%x", md5.Sum(seed))
 
-	fmt.Fprintf(w, "%s\n", tokenString)
-	fmt.Fprintf(w, "%s\n%s\n", player1.Name, player2.Name)
+	resp := PickUpResponse{Token: tokenString}
+
+	resp.Player1.Name = player1.Name
+	resp.Player2.Name = player2.Name
+	resp.Player1.Birth = player1.Birth
+	resp.Player2.Birth = player2.Birth
+	resp.Player1.BT = player1.BT
+	resp.Player2.BT = player2.BT
+
+	var buf bytes.Buffer
+	enc := json.NewEncoder(&buf)
+	if err := enc.Encode(&resp); err != nil {
+		panic("encode error")
+	}
+	fmt.Fprint(w, buf.String())
 
 	token := Token{Token: tokenString, Player1_id: player1.ID, Player2_id: player2.ID}
 	db.Create(&token)
