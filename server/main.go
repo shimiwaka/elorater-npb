@@ -5,22 +5,24 @@ import (
 	// "net/http/cgi"
 	"fmt"
 	"os"
-	muxtrace "github.com/gorilla/mux"
+	"github.com/gorilla/mux"
 )
 
-type root struct{}
+type rootHandler struct{}
 
-func (p *root) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (p *rootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "root")
 }
 
 func main() {
-	router := muxtrace.NewRouter()
+	router := mux.NewRouter()
 
 	rootPath := os.Getenv("SCRIPT_NAME")
 
-	router.Handle(rootPath + "/ping", &ping{})
-	router.Handle(rootPath + "/", &root{})
+	router.Handle(rootPath + "/player/{num}", &playerHandler{})
+
+	router.Handle(rootPath + "/ping", &pingHandler{})
+	router.Handle(rootPath + "/", &rootHandler{})
 
 	server := &http.Server{
 		Addr:         ":9999",
