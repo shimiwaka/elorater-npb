@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"fmt"
 	"time"
-    "math/rand"
+	"math/rand"
 )
 
 type pickUpHandler struct{}
@@ -15,7 +15,7 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var player1 Player
 	var player2 Player
 
-    rand.Seed(time.Now().UnixNano())
+	rand.Seed(time.Now().UnixNano())
 
 	db := ConnectDB()
 	db.Model(&Player{}).Count(&count)

@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	"fmt"
-    "strconv"
+	"strconv"
 )
 
 type selectHandler struct{}
@@ -14,10 +14,12 @@ func (p *selectHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var player2 Player
 	var c int
 	var tokenString string
-    v := r.URL.Query()
-    if v == nil {
-        return
-    }
+
+	v := r.URL.Query()
+	if v == nil {
+		panic("invalid parameter passed")
+	}
+
 	tokenString = v.Get("token")
 	c, _ = strconv.Atoi(v.Get("c"))
 
