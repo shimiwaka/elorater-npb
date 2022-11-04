@@ -18,14 +18,8 @@ func (p *selectHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     if v == nil {
         return
     }
-    for key, values := range v {
-		if key == "token" {
-			tokenString = values[0]
-		}
-		if key == "c" {
-			c, _ = strconv.Atoi(values[0])
-		} 
-    }
+	tokenString = v.Get("token")
+	c, _ = strconv.Atoi(v.Get("c"))
 
 	if c != 1 && c != 2 {
 		panic("invalid parameter passed")

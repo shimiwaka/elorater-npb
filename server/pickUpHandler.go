@@ -21,8 +21,8 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db.Model(&Player{}).Count(&count)
 
 	db.Limit(1).Offset(rand.Intn(count)).Find(&player1)
-	max := player1.Rate + 50
-	min := player1.Rate - 50
+	max := player1.Rate + 100
+	min := player1.Rate - 100
 
 	db.Model(&Player{}).Where("rate > ?", min).Where("rate < ?", max).Count(&count)
 
