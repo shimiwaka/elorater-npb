@@ -21,6 +21,7 @@ func main() {
 
 	router.Handle(rootPath + "/player/{num}", &playerHandler{})
 	router.Handle(rootPath + "/pick-up", &pickUpHandler{})
+	router.Handle(rootPath + "/select", &selectHandler{})
 
 	router.Handle(rootPath + "/ping", &pingHandler{})
 	router.Handle(rootPath + "/", &rootHandler{})
