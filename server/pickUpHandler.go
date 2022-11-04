@@ -25,7 +25,14 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	db.Model(&Player{}).Where("rate > ?", min).Where("rate < ?", max).Count(&count)
 
-	db.Where("rate > ?", min).Where("rate < ?", max).Limit(1).Offset(rand.Intn(count)).Find(&player2)
+	loop := 0
+	for player2.Rate == 0 || player1.ID == player2.ID {
+		db.Where("rate > ?", min).Where("rate < ?", max).Limit(1).Offset(rand.Intn(count)).Find(&player2)
+		loop++
+		if loop >= 100 {
+			db.Limit(1).Offset(rand.Intn(count)).Find(&player2)
+		}
+	}
 
 	fmt.Fprintf(w, "%s\n%s\n", player1.Name, player2.Name)
 }

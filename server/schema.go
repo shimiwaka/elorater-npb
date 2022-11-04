@@ -67,3 +67,10 @@ type Settings struct{
 	DB_port int
 	DB_name string
 }
+
+type Token struct {
+	gorm.Model
+	Player1_id int
+	Player2_id int
+	token string
+}
