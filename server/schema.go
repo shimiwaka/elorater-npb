@@ -59,3 +59,11 @@ type BattingStat struct {
 	MLB bool
 	PlayerID int
 }
+
+type Settings struct{
+	DB_username string
+	DB_pass string
+	DB_host string
+	DB_port int
+	DB_name string
+}
