@@ -13,6 +13,7 @@ import (
 type pickUpHandler struct{}
 
 type PickUpResponse struct {
+	Error bool				`json:"error"`
 	Token string			`json:"token"`
 	Player1 PickUpPlayer	`json:"player1"`
 	Player2 PickUpPlayer	`json:"player2"`
@@ -58,12 +59,26 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	resp := PickUpResponse{Token: tokenString}
 
+	player1, _ = getPlayerAllStats(db, player1.ID)
+	player2, _ = getPlayerAllStats(db, player2.ID)
+
+	resp.Error = false
 	resp.Player1.Name = player1.Name
 	resp.Player2.Name = player2.Name
 	resp.Player1.Birth = player1.Birth
 	resp.Player2.Birth = player2.Birth
 	resp.Player1.BT = player1.BT
 	resp.Player2.BT = player2.BT
+
+	resp.Player1.PitchingTotal = getTotalPitchingStat(player1)
+	resp.Player2.PitchingTotal = getTotalPitchingStat(player2)
+	resp.Player1.BattingTotal = getTotalBattingStat(player1)
+	resp.Player2.BattingTotal = getTotalBattingStat(player2)
+
+	resp.Player1.BattingCareerHigh = getCareerHighBattingStat(player1)
+	resp.Player2.BattingCareerHigh = getCareerHighBattingStat(player2)
+	resp.Player1.PitchingCareerHigh = getCareerHighPitchingStat(player1)
+	resp.Player2.PitchingCareerHigh = getCareerHighPitchingStat(player2)
 
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)

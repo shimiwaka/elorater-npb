@@ -15,7 +15,7 @@ type Player struct {
 }
 
 type PitchingStat struct {
-	gorm.Model
+	gorm.Model		`json:"-"`
 	Year string		`json:"year"`
 	Game int		`json:"game"`
 	Starter int		`json:"starter"`
@@ -30,11 +30,11 @@ type PitchingStat struct {
 	Era float64		`json:"era"`
 	WHIP float64	`json:"whip"`
 	MLB bool		`json:"mlb"`
-	PlayerID int	`json:"playerID"`
+	PlayerID int	`json:"-"`
 }
 
 type BattingStat struct {
-	gorm.Model
+	gorm.Model		`json:"-"`
 	Year string		`json:"year"`
 	Game int		`json:"game"`
 	PA int			`json:"pa"`
@@ -57,7 +57,7 @@ type BattingStat struct {
 	Slg float64		`json:"slg"`
 	Ops float64		`json:"ops"`
 	MLB bool		`json:"mlb"`
-	PlayerID int	`json:"playerID"`
+	PlayerID int	`json:"-"`
 }
 
 type Settings struct{

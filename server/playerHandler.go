@@ -11,7 +11,7 @@ import (
 
 type playerHandler struct{}
 
-func getCareerPitchingStat(p Player) PitchingStat {
+func getTotalPitchingStat(p Player) PitchingStat {
 	for _, stat := range p.Pitching {
 		if stat.Year == "国内通算" {
 			return stat
@@ -20,7 +20,7 @@ func getCareerPitchingStat(p Player) PitchingStat {
 	return PitchingStat{}
 }
 
-func getCareerBattingStat(p Player) BattingStat {
+func getTotalBattingStat(p Player) BattingStat {
 	for _, stat := range p.Batting {
 		if stat.Year == "国内通算" {
 			return stat
@@ -29,15 +29,49 @@ func getCareerBattingStat(p Player) BattingStat {
 	return BattingStat{}
 }
 
-func getPlayerAllStats(db *gorm.DB, id int) (Player, error) {
+func getPlayerAllStats(db *gorm.DB, id uint) (Player, error) {
 	var player Player
 	err := db.Model(&Player{}).Preload("Pitching").Preload("Batting").First(&player, id).Error
 	return player, err
 }
 
+func getCareerHighBattingStat(p Player) BattingStat {
+	var score float64
+	var max float64
+	max = -9999
+
+	careerHigh := BattingStat{}
+	for _, stat := range p.Batting {
+		if stat.Year != "国内通算" && stat.Year != "MLB通算" {
+			score = (stat.Ops - 0.500) * float64(stat.PA)
+			if score > max {
+				careerHigh = stat
+			}
+		}
+	}
+	return careerHigh
+}
+
+func getCareerHighPitchingStat(p Player) PitchingStat {
+	var score float64
+	var max float64
+	max = -9999
+
+	careerHigh := PitchingStat{}
+	for _, stat := range p.Pitching {
+		if stat.Year != "国内通算" && stat.Year != "MLB通算" {
+			score = (5 - stat.Era) * float64(stat.Inning)
+			if score > max {
+				careerHigh = stat
+			}
+		}
+	}
+	return careerHigh
+}
+
 func showCareer(p Player) string {
-	pStat := getCareerPitchingStat(p)
-	bStat := getCareerBattingStat(p)
+	pStat := getTotalPitchingStat(p)
+	bStat := getTotalBattingStat(p)
 	ret := fmt.Sprintf("%s %s\n%d勝%d敗 %.2f\n%.3f %d本 %d打点",
 						p.Name, p.Birth,
 						pStat.Win, pStat.Lose, pStat.Era,
@@ -55,7 +89,7 @@ func (p *playerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	var player Player
 
-	player, err := getPlayerAllStats(db, id)
+	player, err := getPlayerAllStats(db, uint(id))
 
 	if err != nil {
 		panic("failed to get player")
