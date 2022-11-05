@@ -46,6 +46,7 @@ func getCareerHighBattingStat(p Player) BattingStat {
 			score = (stat.Ops - 0.500) * float64(stat.PA)
 			if score > max {
 				careerHigh = stat
+				max = score
 			}
 		}
 	}
@@ -63,6 +64,7 @@ func getCareerHighPitchingStat(p Player) PitchingStat {
 			score = (5 - stat.Era) * float64(stat.Inning)
 			if score > max {
 				careerHigh = stat
+				max = score
 			}
 		}
 	}
