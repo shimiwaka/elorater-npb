@@ -26,7 +26,6 @@ interface BattingStat {
   hr: number;
   rbi: number;
   ops: number;
-  papa: number;
 }
 
 type Props = {

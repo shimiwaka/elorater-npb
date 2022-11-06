@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from 'react';
-import VotePlayer from './components/Player'
+import VotePlayer from './components/VotePlayer'
 
 const targetURL: string = "http://192.168.0.4:9999/";
 
