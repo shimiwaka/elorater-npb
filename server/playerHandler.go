@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"fmt"
 	"strconv"
+	"encoding/json"
+	"bytes"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -71,21 +73,11 @@ func getCareerHighPitchingStat(p Player) PitchingStat {
 	return careerHigh
 }
 
-func showCareer(p Player) string {
-	pStat := getTotalPitchingStat(p)
-	bStat := getTotalBattingStat(p)
-	ret := fmt.Sprintf("%s %s\n%d勝%d敗 %.2f\n%.3f %d本 %d打点",
-						p.Name, p.Birth,
-						pStat.Win, pStat.Lose, pStat.Era,
-						bStat.Avg, bStat.HR, bStat.RBI)
-
-	return ret
-}
-
 func (p *playerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	fmt.Fprintf(w, "Show Player %s\n", vars["num"])
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS")
 
+	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["num"])
 	db := ConnectDB()
 
@@ -97,6 +89,10 @@ func (p *playerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		panic("failed to get player")
 	}
 
-	fmt.Fprintf(w, "%s", showCareer(player))
-
+	var buf bytes.Buffer
+	enc := json.NewEncoder(&buf)
+	if err := enc.Encode(&player); err != nil {
+		panic("encode error")
+	}
+	fmt.Fprint(w, buf.String())
 }

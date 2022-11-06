@@ -17,11 +17,12 @@ type RankingResponse struct{
 type RankingPlayer struct {
 	Name string				`json:"name"`
 	Rate int				`json:"rate"`
+	Id uint					`json:"id"`
 }
 
 func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS" )
+	w.Header().Set("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS")
  
 	db := ConnectDB()
 
@@ -35,7 +36,7 @@ func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	for _, player := range players {
 		// fmt.Fprintf(w, "%s:%d\n", player.Name, player.Rate)
-		rPlayer := RankingPlayer{Name: player.Name, Rate: player.Rate}
+		rPlayer := RankingPlayer{Name: player.Name, Rate: player.Rate, Id: player.ID}
 		resp.Players = append(resp.Players, rPlayer)
 	}
 	

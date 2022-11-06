@@ -1,11 +1,13 @@
 import axios from "axios";
 import React from 'react';
+import { Routes, Route, Link } from "react-router-dom";
 
 const targetURL: string = "http://192.168.0.4:9999/";
 
 type RankedPlayer = {
   name: string;
   rate: number;
+  id: number;
 }
 
 const Ranking = () => {
@@ -58,7 +60,7 @@ const Ranking = () => {
         <button onClick={() => next()}> &gt; </button>
       </div>
       <ul>
-        {players.map((value, i) => <li key={i}>{i+page*100+1}位 : {value.rate} : {value.name}</li>)}
+        {players.map((value, i) => <li key={i}>{i+page*100+1}位 : {value.rate} : <Link to={`/player/` + value.id}>{value.name}</Link></li>)}
       </ul>
     </div>
   );

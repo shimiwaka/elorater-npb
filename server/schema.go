@@ -5,7 +5,7 @@ import (
 )
 
 type Player struct {
-	gorm.Model
+	gorm.Model					`json:"-"`
 	Name string					`json:"name"`
 	Birth string				`json:"birth"`
 	BT string					`json:"bt"`
