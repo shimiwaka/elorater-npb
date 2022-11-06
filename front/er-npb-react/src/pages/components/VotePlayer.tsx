@@ -2,6 +2,7 @@ import React from 'react';
 
 interface PlayerData {
   name: string;
+  birth: string;
   pitchingTotal: any;
   battingTotal: any;
   pitchingCareerHigh: any;
@@ -76,6 +77,7 @@ const VotePlayer = ( { num, player, onClickFunc } : Props) => {
   return (
     <button onClick={() => onClickFunc(num)}>
       <div>{player.name}</div>
+      <div>{player.birth}</div>
       <div><ShowPitchingStat stat={player.pitchingTotal}/></div>
       <div><ShowPitchingStat stat={player.pitchingCareerHigh}/></div>
       <div><ShowBattingStat stat={player.battingTotal}/></div>
