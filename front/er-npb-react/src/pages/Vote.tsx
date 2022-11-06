@@ -24,7 +24,7 @@ const Vote = () => {
   if (!player1 || !player2) return ( <div>Loading</div>);
 
   function select( num : number ){
-    axios.get(targetURL + "select?c=" + num + "&token=" + token).then((response) => {
+    axios.get(targetURL + "vote?c=" + num + "&token=" + token).then((response) => {
       if(response.data.error) {
         console.log("Error occured");
       }

@@ -6,9 +6,9 @@ import (
 	"strconv"
 )
 
-type selectHandler struct{}
+type voteHandler struct{}
 
-func (p *selectHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var token Token
 	var player1 Player
 	var player2 Player
@@ -16,7 +16,7 @@ func (p *selectHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var tokenString string
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS" )
+	w.Header().Set("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS")
  
 	v := r.URL.Query()
 	if v == nil {
