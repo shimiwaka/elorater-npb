@@ -21,9 +21,6 @@ type RankingPlayer struct {
 }
 
 func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS")
- 
 	db := ConnectDB()
 
 	resp := RankingResponse{}

@@ -15,9 +15,6 @@ func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var c int
 	var tokenString string
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS")
- 
 	v := r.URL.Query()
 	if v == nil {
 		panic("invalid parameter passed")

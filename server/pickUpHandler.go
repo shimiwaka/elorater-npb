@@ -34,9 +34,6 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var player1 Player
 	var player2 Player
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS" )
- 
 	rand.Seed(time.Now().UnixNano())
 
 	db := ConnectDB()
