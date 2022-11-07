@@ -30,39 +30,48 @@ type PickUpPlayer struct {
 }
 
 func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var count int
-	var player1 Player
-	var player2 Player
+	var count1, count2 int
+	var player1, player2 Player
 
 	rand.Seed(time.Now().UnixNano())
 
 	db := ConnectDB()
-	db.Model(&Player{}).Count(&count)
+	db.Model(&Player{}).Count(&count1)
 
-	db.Limit(1).Offset(rand.Intn(count)).Find(&player1)
+	db.Limit(1).Offset(rand.Intn(count1)).Find(&player1)
 	max := player1.Rate + 100
 	min := player1.Rate - 100
 
-	db.Model(&Player{}).Where("rate > ?", min).Where("rate < ?", max).Count(&count)
+	db.Model(&Player{}).Where("rate > ?", min).Where("rate < ?", max).Count(&count2)
 
 	loop := 0
-	for player2.Rate == 0 || player1.ID == player2.ID {
-		db.Where("rate > ?", min).Where("rate < ?", max).Limit(1).Offset(rand.Intn(count)).Find(&player2)
+	for (player2.Rate == 0 || player1.ID == player2.ID) && count2 > 1 {
+		db.Where("rate > ?", min).Where("rate < ?", max).Limit(1).Offset(rand.Intn(count2)).Find(&player2)
 		loop++
 		if loop >= 100 {
-			db.Limit(1).Offset(rand.Intn(count)).Find(&player2)
+			db.Limit(1).Offset(rand.Intn(count1)).Find(&player2)
 		}
 	}
 
-	seed := []byte(player1.Name + player2.Name + string(time.Now().UnixNano()))
+	seed := []byte(player1.Name + player2.Name + fmt.Sprint(time.Now().UnixNano()))
 	tokenString := fmt.Sprintf("%x", md5.Sum(seed))
 
-	resp := PickUpResponse{Token: tokenString}
+	player1, err := getPlayerAllStats(db, player1.ID)
+	
+	if err != nil {
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to retrieve player infomation\"}")
+		return
+	}
 
-	player1, _ = getPlayerAllStats(db, player1.ID)
-	player2, _ = getPlayerAllStats(db, player2.ID)
+	player2, err = getPlayerAllStats(db, player2.ID)
 
-	resp.Error = false
+	if err != nil {
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to retrieve player infomation\"}")
+		return
+	}
+
+	resp := PickUpResponse{Error: false, Token: tokenString}
+
 	resp.Player1.Name = player1.Name
 	resp.Player2.Name = player2.Name
 	resp.Player1.Birth = player1.Birth
@@ -82,8 +91,9 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
-	if err := enc.Encode(&resp); err != nil {
-		panic("encode error")
+	if err = enc.Encode(&resp); err != nil {
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to encode json\"}")
+		return
 	}
 	fmt.Fprint(w, buf.String())
 
