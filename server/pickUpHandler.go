@@ -38,11 +38,23 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db := ConnectDB()
 	db.Model(&Player{}).Count(&count1)
 
+	if count1 < 2 {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"no player data in database\"}")
+		return
+	}
+
 	db.Limit(1).Offset(rand.Intn(count1)).Find(&player1)
 	max := player1.Rate + 50
 	min := player1.Rate - 50
 
 	db.Model(&Player{}).Where("rate > ?", min).Where("rate < ?", max).Count(&count2)
+
+	if count2 < 2 {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"no player data in database\"}")
+		return
+	}
 
 	loop := 0
 	for (player2.Rate == 0 || player1.ID == player2.ID) && count2 > 1 {
@@ -53,22 +65,22 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	seed := []byte(player1.Name + player2.Name + fmt.Sprint(time.Now().UnixNano()))
-	tokenString := fmt.Sprintf("%x", md5.Sum(seed))
-
 	player1, err := getPlayerAllStats(db, player1.ID)
-	
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to retrieve player infomation\"}")
 		return
 	}
 
 	player2, err = getPlayerAllStats(db, player2.ID)
-
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to retrieve player infomation\"}")
 		return
 	}
+
+	seed := []byte(player1.Name + player2.Name + fmt.Sprint(time.Now().UnixNano()))
+	tokenString := fmt.Sprintf("%x", md5.Sum(seed))
 
 	resp := PickUpResponse{Error: false, Token: tokenString}
 
@@ -92,6 +104,7 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
 	if err = enc.Encode(&resp); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to encode json\"}")
 		return
 	}
