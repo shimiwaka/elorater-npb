@@ -22,6 +22,24 @@ func getTotalBattingStat(p Player) BattingStat {
 	return BattingStat{}
 }
 
+func getMLBTotalPitchingStat(p Player) PitchingStat {
+	for _, stat := range p.Pitching {
+		if stat.Year == "MLB通算" {
+			return stat
+		}
+	}
+	return PitchingStat{}
+}
+
+func getMLBTotalBattingStat(p Player) BattingStat {
+	for _, stat := range p.Batting {
+		if stat.Year == "MLB通算" {
+			return stat
+		}
+	}
+	return BattingStat{}
+}
+
 func getPlayerAllStats(db *gorm.DB, id uint) (Player, error) {
 	var player Player
 	err := db.Model(&Player{}).Preload("Pitching").Preload("Batting").First(&player, id).Error

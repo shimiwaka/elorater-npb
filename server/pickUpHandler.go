@@ -27,6 +27,8 @@ type PickUpPlayer struct {
 	BattingCareerHigh BattingStat	`json:"battingCareerHigh"`
 	PitchingTotal PitchingStat		`json:"pitchingTotal"`
 	BattingTotal BattingStat		`json:"battingTotal"`
+	PitchingMLBTotal PitchingStat	`json:"pitchingMLBTotal"`
+	BattingMLBTotal BattingStat		`json:"battingMLBTotal"`
 }
 
 func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -93,6 +95,11 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	resp.Player2.PitchingTotal = getTotalPitchingStat(player2)
 	resp.Player1.BattingTotal = getTotalBattingStat(player1)
 	resp.Player2.BattingTotal = getTotalBattingStat(player2)
+
+	resp.Player1.PitchingMLBTotal = getMLBTotalPitchingStat(player1)
+	resp.Player2.PitchingMLBTotal = getMLBTotalPitchingStat(player2)
+	resp.Player1.BattingMLBTotal = getMLBTotalBattingStat(player1)
+	resp.Player2.BattingMLBTotal = getMLBTotalBattingStat(player2)
 
 	resp.Player1.BattingCareerHigh = getCareerHighBattingStat(player1)
 	resp.Player2.BattingCareerHigh = getCareerHighBattingStat(player2)
