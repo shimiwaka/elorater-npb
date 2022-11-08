@@ -38,7 +38,7 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db := ConnectDB()
 	db.Model(&Player{}).Count(&count1)
 
-	if count1 < 2 {
+	if count1 <= 1 {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, "{\"error\": true, \"message\": \"no player data in database\"}")
 		return
@@ -50,18 +50,15 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	db.Model(&Player{}).Where("rate > ?", min).Where("rate < ?", max).Count(&count2)
 
-	if count2 < 2 {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, "{\"error\": true, \"message\": \"no player data in database\"}")
-		return
-	}
-
 	loop := 0
-	for (player2.Rate == 0 || player1.ID == player2.ID) && count2 > 1 {
+	for player2.Rate == 0 || player1.ID == player2.ID {
 		db.Where("rate > ?", min).Where("rate < ?", max).Limit(1).Offset(rand.Intn(count2)).Find(&player2)
 		loop++
-		if loop >= 100 {
+		if loop >= 100 || count2 <= 1 {
 			db.Limit(1).Offset(rand.Intn(count1)).Find(&player2)
+		}
+		if loop >= 1000 {
+			break
 		}
 	}
 
