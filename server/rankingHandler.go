@@ -11,10 +11,10 @@ import (
 type rankingHandler struct{}
 
 type RankingResponse struct{
-	Players []RankingPlayer	`json:"players"`
+	Players []RankedPlayer	`json:"players"`
 }
 
-type RankingPlayer struct {
+type RankedPlayer struct {
 	Name string				`json:"name"`
 	Rate int				`json:"rate"`
 	Id uint					`json:"id"`
@@ -24,23 +24,21 @@ func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db := ConnectDB()
 
 	resp := RankingResponse{}
-
 	players := []Player{}
 
-	v := r.URL.Query()
-	page, _ := strconv.Atoi(v.Get("p"))
+	page, _ := strconv.Atoi(r.URL.Query().Get("p"))
 	db.Limit(100).Offset(page * 100).Order("rate desc").Find(&players)
 
 	for _, player := range players {
-		// fmt.Fprintf(w, "%s:%d\n", player.Name, player.Rate)
-		rPlayer := RankingPlayer{Name: player.Name, Rate: player.Rate, Id: player.ID}
-		resp.Players = append(resp.Players, rPlayer)
+		resp.Players = append(resp.Players, RankedPlayer{Name: player.Name, Rate: player.Rate, Id: player.ID})
 	}
 	
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
 	if err := enc.Encode(&resp); err != nil {
-		panic("encode error")
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to encode json\"}")
+		return
 	}
 	fmt.Fprint(w, buf.String())
 }
