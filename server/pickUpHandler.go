@@ -58,6 +58,7 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			db.Limit(1).Offset(rand.Intn(count1)).Find(&player2)
 		}
 		if loop >= 1000 {
+			player2 = Player{}
 			break
 		}
 	}
