@@ -37,6 +37,9 @@ func getCareerHighBattingStat(p Player) BattingStat {
 	for _, stat := range p.Batting {
 		if stat.Year != "国内通算" && stat.Year != "MLB通算" {
 			score = (stat.Ops - 0.500) * float64(stat.PA)
+			if stat.MLB {
+				score = score * 1.5
+			}
 			if score > max {
 				careerHigh = stat
 				max = score
@@ -55,6 +58,9 @@ func getCareerHighPitchingStat(p Player) PitchingStat {
 	for _, stat := range p.Pitching {
 		if stat.Year != "国内通算" && stat.Year != "MLB通算" {
 			score = (5 - stat.Era) * float64(stat.Inning)
+			if stat.MLB {
+				score = score * 1.5
+			}
 			if score > max {
 				careerHigh = stat
 				max = score
