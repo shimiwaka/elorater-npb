@@ -22,13 +22,17 @@ func (p *playerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	player, err := getPlayerAllStats(db, uint(id))
 
 	if err != nil {
-		panic("failed to get player")
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"incorrect specified ID\"}")
+		return
 	}
 
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
 	if err := enc.Encode(&player); err != nil {
-		panic("encode error")
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to encode json\"}")
+		return
 	}
 	fmt.Fprint(w, buf.String())
 }
