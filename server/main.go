@@ -13,10 +13,10 @@ func main() {
 
 	rootPath := os.Getenv("SCRIPT_NAME")
 
-	router.Handle(rootPath + "/player/{num}", setAccessControlAllowHeader(&playerHandler{}))
-	router.Handle(rootPath + "/pick-up", setAccessControlAllowHeader(&pickUpHandler{}))
-	router.Handle(rootPath + "/vote", setAccessControlAllowHeader(&voteHandler{}))
-	router.Handle(rootPath + "/ranking", setAccessControlAllowHeader(&rankingHandler{}))
+	router.Handle(rootPath + "/player/{num}", setCommonHeader(&playerHandler{}))
+	router.Handle(rootPath + "/pick-up", setCommonHeader(&pickUpHandler{}))
+	router.Handle(rootPath + "/vote", setCommonHeader(&voteHandler{}))
+	router.Handle(rootPath + "/ranking", setCommonHeader(&rankingHandler{}))
 	router.Handle(rootPath + "/ping", &pingHandler{})
 
 	server := &http.Server{

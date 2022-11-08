@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func setAccessControlAllowHeader(h http.Handler) http.Handler {
+func setCommonHeader(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			w.WriteHeader(http.StatusNotFound)
