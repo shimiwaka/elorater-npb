@@ -10,28 +10,33 @@ type voteHandler struct{}
 
 func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var token Token
-	var player1 Player
-	var player2 Player
+	var player1, player2 Player
 	var c int
 	var tokenString string
 
-	v := r.URL.Query()
-	if v == nil {
-		panic("invalid parameter passed")
+	vars := r.URL.Query()
+	if vars == nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to get query\"}")
+		return
 	}
 
-	tokenString = v.Get("token")
-	c, _ = strconv.Atoi(v.Get("c"))
+	tokenString = vars.Get("token")
+	c, _ = strconv.Atoi(vars.Get("c"))
 
 	if c != 1 && c != 2 {
-		panic("invalid parameter passed")
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"incorrect parameter\"}")
+		return
 	}
 
 	db := ConnectDB()
 	db.First(&token, "token = ?", tokenString)
 
 	if token.Player1_id == 0 {
-		panic("invalid parameter passed")
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"incorrect token\"}")
+		return
 	}
 
 	db.First(&player1, token.Player1_id)

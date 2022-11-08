@@ -13,18 +13,18 @@ func ConnectDB() *gorm.DB {
 	s := Settings{}
 	raw, err := os.ReadFile("./config/settings.json")
 	if err != nil {
-		panic("failed to open config file")
+		return nil
 	}
 
 	json.Unmarshal(raw, &s)
 
-	sqlConnect := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+	connectQuery := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 					s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)
 
-	db, err := gorm.Open("mysql", sqlConnect)
+	db, err := gorm.Open("mysql", connectQuery)
 
 	if err != nil {
-		panic("failed to connect database")
+		return nil
 	}
 
 	return db

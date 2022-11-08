@@ -29,6 +29,12 @@ func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("p"))
 	db.Limit(100).Offset(page * 100).Order("rate desc").Find(&players)
 
+	if len(players) == 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"incorrect specified page number\"}")
+		return
+	}
+
 	for _, player := range players {
 		resp.Players = append(resp.Players, RankedPlayer{Name: player.Name, Rate: player.Rate, Id: player.ID})
 	}
