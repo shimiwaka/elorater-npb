@@ -11,8 +11,6 @@ type voteHandler struct{}
 func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var token Token
 	var player1, player2 Player
-	var c int
-	var tokenString string
 
 	vars := r.URL.Query()
 	if vars == nil {
@@ -21,8 +19,8 @@ func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tokenString = vars.Get("token")
-	c, _ = strconv.Atoi(vars.Get("c"))
+	tokenString := vars.Get("token")
+	c, _ := strconv.Atoi(vars.Get("c"))
 
 	if c != 1 && c != 2 {
 		w.WriteHeader(http.StatusBadRequest)
