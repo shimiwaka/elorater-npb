@@ -28,7 +28,7 @@ func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db := ConnectDB()
+	db := connectDB()
 	db.First(&token, "token = ?", tokenString)
 
 	if token.Player1_id == 0 {

@@ -9,7 +9,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-func ConnectDB() *gorm.DB {
+func connectDB() *gorm.DB {
 	s := Settings{}
 	raw, err := os.ReadFile("./config/settings.json")
 	if err != nil {

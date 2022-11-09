@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"time"
 	"math/rand"
+
+	"github.com/jinzhu/gorm"
 )
 
 type pickUpHandler struct{}
@@ -31,13 +33,11 @@ type PickUpPlayer struct {
 	BattingMLBTotal BattingStat		`json:"battingMLBTotal"`
 }
 
-func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func pickUp(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	var count1, count2 int
 	var player1, player2 Player
 
 	rand.Seed(time.Now().UnixNano())
-
-	db := ConnectDB()
 	db.Model(&Player{}).Count(&count1)
 
 	if count1 <= 1 {
@@ -49,16 +49,18 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db.Limit(1).Offset(rand.Intn(count1)).Find(&player1)
 	max := player1.Rate + 50
 	min := player1.Rate - 50
+	db.Model(&Player{}).Where("rate > ?", min).Where("rate < ?", max).Where("id != ?", player1.ID).Count(&count2)
 
-	db.Model(&Player{}).Where("rate > ?", min).Where("rate < ?", max).Count(&count2)
+	if count2 <= 1 {
+		max = 9999
+		min = -9999
+		count2 = count1 - 1
+	}
 
 	loop := 0
-	for player2.Rate == 0 || player1.ID == player2.ID {
-		db.Where("rate > ?", min).Where("rate < ?", max).Limit(1).Offset(rand.Intn(count2)).Find(&player2)
+	for player2.Rate == 0  {
+		db.Where("rate > ?", min).Where("rate < ?", max).Where("id != ?", player1.ID).Limit(1).Offset(rand.Intn(count2)).Find(&player2)
 		loop++
-		if loop >= 100 || count2 <= 1 {
-			db.Limit(1).Offset(rand.Intn(count1)).Find(&player2)
-		}
 		if loop >= 1000 {
 			player2 = Player{}
 			break
@@ -117,4 +119,9 @@ func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	token := Token{Token: tokenString, Player1_id: player1.ID, Player2_id: player2.ID}
 	db.Create(&token)
+}
+
+func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	db := connectDB()
+	pickUp(db, w, r)
 }

@@ -21,7 +21,7 @@ type RankedPlayer struct {
 }
 
 func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	db := ConnectDB()
+	db := connectDB()
 
 	resp := RankingResponse{}
 	players := []Player{}

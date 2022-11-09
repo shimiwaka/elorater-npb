@@ -15,7 +15,7 @@ type playerHandler struct{}
 func (p *playerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["num"])
-	db := ConnectDB()
+	db := connectDB()
 
 	var player Player
 
