@@ -1,4 +1,4 @@
-module githum.com/shimiwaka/elorater-npb
+module github.com/shimiwaka/elorater-npb
 
 go 1.19
 
