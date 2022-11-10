@@ -8,15 +8,12 @@ import (
 	"bytes"
 
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 )
 
 type playerHandler struct{}
 
-func (p *playerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id, _ := strconv.Atoi(vars["num"])
-	db := connectDB()
-
+func showPlayerData(db *gorm.DB, id int, w http.ResponseWriter, r *http.Request) {
 	var player Player
 
 	player, err := getPlayerAllStats(db, uint(id))
@@ -35,4 +32,12 @@ func (p *playerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprint(w, buf.String())
+}
+
+func (p *playerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, _ := strconv.Atoi(vars["num"])
+	db := connectDB()
+
+	showPlayerData(db, id, w, r)
 }
