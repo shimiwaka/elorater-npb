@@ -22,7 +22,12 @@ func initializeDB(db *gorm.DB) {
 }
 
 func setDummyPlayer(db *gorm.DB, name string, rate int) uint {
-	player := Player{Name: name, Rate: rate}
+	batting := BattingStat{Year: "2000", Avg: 0.300}
+	pitching := PitchingStat{Year: "2000", Era: 2.00}
+	player := Player{Name: name, Rate: rate,
+					Pitching: []PitchingStat{pitching},
+					Batting: []BattingStat{batting},
+					}
 	db.Create(&player)
 	return player.ID
 }

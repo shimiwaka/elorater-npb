@@ -30,7 +30,7 @@ func doShowPlayerDataTest(t *testing.T, db *gorm.DB) {
 	
 	raw, _ := io.ReadAll(resp.Body)
 	body := string(raw)
-	assert.Equal("{\"name\":\"dummy\",\"birth\":\"\",\"bt\":\"\",\"rate\":1500,\"pitching\":[],\"batting\":[]}\n", body)
+	assert.Equal("{\"name\":\"dummy\",\"birth\":\"\",\"bt\":\"\",\"rate\":1500,\"pitching\":[{\"year\":\"2000\",\"game\":0,\"starter\":0,\"cg\":0,\"shutout\":0,\"win\":0,\"lose\":0,\"save\":0,\"hold\":0,\"inning\":0,\"k\":0,\"era\":2,\"whip\":0,\"mlb\":false}],\"batting\":[{\"year\":\"2000\",\"game\":0,\"pa\":0,\"atbat\":0,\"hit\":0,\"twoBase\":0,\"threeBase\":0,\"hr\":0,\"rbi\":0,\"sb\":0,\"cs\":0,\"sh\":0,\"sf\":0,\"bb\":0,\"iw\":0,\"hbp\":0,\"so\":0,\"avg\":0.3,\"obp\":0,\"slg\":0,\"ops\":0,\"mlb\":false}]}\n", body)
 }
 
 func doShowPlayerDataExceptionTest(t *testing.T, db *gorm.DB) {
