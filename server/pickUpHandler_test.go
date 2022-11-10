@@ -71,6 +71,31 @@ func doPickUpTest(t *testing.T, db *gorm.DB, tc PickUpTestCase) {
 	}
 }
 
+func doPickUpTestUnusual(t *testing.T, db *gorm.DB) {
+	req := httptest.NewRequest(http.MethodGet, "http://example.com/pick-up", nil)
+	w := httptest.NewRecorder()
+
+	assert := assert.New(t)
+	initializeDB(db)
+
+	setDummyPlayer(db, "dummy", 1500)
+	setDummyPlayer(db, "dummy", 1500)
+	setDummyPlayer(db, "high_rate_dummy", 2000)
+	setDummyPlayer(db, "high_rate_dummy", 2000)
+
+	pickUp(db, w, req)
+
+	resp := w.Result()
+	defer resp.Body.Close()
+
+	raw, _ := io.ReadAll(resp.Body)
+
+	r := PickUpResponse{}
+	json.Unmarshal(raw, &r)
+
+	assert.Equal(r.Player1.Name, r.Player2.Name)
+}
+
 func TestPickUp(t *testing.T) {
 	s := Settings{}
 	raw, err := os.ReadFile("./config/settings_test.json")
@@ -121,5 +146,9 @@ func TestPickUp(t *testing.T) {
 
 	for _, tc := range tests {
 		doPickUpTest(t, db, tc)
+	}
+
+	for i := 0; i < 10; i++ {
+		doPickUpTestUnusual(t, db)
 	}
 }

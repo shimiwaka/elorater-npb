@@ -51,7 +51,7 @@ func pickUp(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	min := player1.Rate - 50
 	db.Model(&Player{}).Where("rate > ?", min).Where("rate < ?", max).Where("id != ?", player1.ID).Count(&count2)
 
-	if count2 <= 1 {
+	if count2 < 1 {
 		max = 9999
 		min = -9999
 		count2 = count1 - 1
