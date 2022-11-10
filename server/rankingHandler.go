@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"encoding/json"
 	"bytes"
+
+	"github.com/jinzhu/gorm"
 )
 
 type rankingHandler struct{}
@@ -20,9 +22,7 @@ type RankedPlayer struct {
 	Id uint					`json:"id"`
 }
 
-func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	db := connectDB()
-
+func ranking(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	resp := RankingResponse{}
 	players := []Player{}
 
@@ -47,4 +47,9 @@ func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprint(w, buf.String())
+}
+
+func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	db := connectDB()
+	ranking(db, w, r)
 }
