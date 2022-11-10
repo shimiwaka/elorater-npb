@@ -31,3 +31,10 @@ func setDummyPlayer(db *gorm.DB, name string, rate int) uint {
 	db.Create(&player)
 	return player.ID
 }
+
+func setDummyToken(db *gorm.DB) {
+	token := Token{Token: "DUMMY",
+					Player1_id: setDummyPlayer(db, "dummy1", 1500),
+					Player2_id: setDummyPlayer(db, "dummy2", 1500)}
+	db.Create(&token)
+}

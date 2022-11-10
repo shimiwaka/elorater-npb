@@ -38,7 +38,7 @@ func ranking(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	for _, player := range players {
 		resp.Players = append(resp.Players, RankedPlayer{Name: player.Name, Rate: player.Rate, Id: player.ID})
 	}
-	
+
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
 	if err := enc.Encode(&resp); err != nil {

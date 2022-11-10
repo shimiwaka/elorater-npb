@@ -29,7 +29,6 @@ func doShowPlayerDataTest(t *testing.T, db *gorm.DB) {
 	assert.Equal(http.StatusOK, resp.StatusCode)
 	
 	raw, _ := io.ReadAll(resp.Body)
-
 	var player Player
 	json.Unmarshal(raw, &player)
 

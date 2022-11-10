@@ -4,11 +4,13 @@ import (
 	"net/http"
 	"fmt"
 	"strconv"
+
+	"github.com/jinzhu/gorm"
 )
 
 type voteHandler struct{}
 
-func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func vote(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	var token Token
 	var player1, player2 Player
 
@@ -28,7 +30,6 @@ func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db := connectDB()
 	db.First(&token, "token = ?", tokenString)
 
 	if token.Player1_id == 0 {
@@ -54,4 +55,9 @@ func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db.Delete(&token)
 
 	fmt.Fprintf(w, "{\"error\": false}")
+}
+
+func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	db := connectDB()
+	vote(db, w, r)
 }
