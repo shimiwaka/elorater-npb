@@ -86,27 +86,29 @@ func pickUp(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 	resp := PickUpResponse{Error: false, Token: tokenString}
 
-	resp.Player1.Name = player1.Name
-	resp.Player2.Name = player2.Name
-	resp.Player1.Birth = player1.Birth
-	resp.Player2.Birth = player2.Birth
-	resp.Player1.BT = player1.BT
-	resp.Player2.BT = player2.BT
+	resp.Player1 = PickUpPlayer{
+		Name: player1.Name,
+		Birth: player1.Birth,
+		BT: player1.BT,
+		PitchingTotal: getTotalPitchingStat(player1),
+		BattingTotal: getTotalBattingStat(player1),
+		PitchingMLBTotal: getMLBTotalPitchingStat(player1),
+		BattingMLBTotal: getMLBTotalBattingStat(player1),
+		BattingCareerHigh: getCareerHighBattingStat(player1),
+		PitchingCareerHigh: getCareerHighPitchingStat(player1),
+	}
 
-	resp.Player1.PitchingTotal = getTotalPitchingStat(player1)
-	resp.Player2.PitchingTotal = getTotalPitchingStat(player2)
-	resp.Player1.BattingTotal = getTotalBattingStat(player1)
-	resp.Player2.BattingTotal = getTotalBattingStat(player2)
-
-	resp.Player1.PitchingMLBTotal = getMLBTotalPitchingStat(player1)
-	resp.Player2.PitchingMLBTotal = getMLBTotalPitchingStat(player2)
-	resp.Player1.BattingMLBTotal = getMLBTotalBattingStat(player1)
-	resp.Player2.BattingMLBTotal = getMLBTotalBattingStat(player2)
-
-	resp.Player1.BattingCareerHigh = getCareerHighBattingStat(player1)
-	resp.Player2.BattingCareerHigh = getCareerHighBattingStat(player2)
-	resp.Player1.PitchingCareerHigh = getCareerHighPitchingStat(player1)
-	resp.Player2.PitchingCareerHigh = getCareerHighPitchingStat(player2)
+	resp.Player2 = PickUpPlayer{
+		Name: player2.Name,
+		Birth: player2.Birth,
+		BT: player2.BT,
+		PitchingTotal: getTotalPitchingStat(player2),
+		BattingTotal: getTotalBattingStat(player2),
+		PitchingMLBTotal: getMLBTotalPitchingStat(player2),
+		BattingMLBTotal: getMLBTotalBattingStat(player2),
+		BattingCareerHigh: getCareerHighBattingStat(player2),
+		PitchingCareerHigh: getCareerHighPitchingStat(player2),
+	}
 
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
