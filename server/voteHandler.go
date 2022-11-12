@@ -40,13 +40,21 @@ func vote(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 	db.First(&player1, token.Player1_id)
 	db.First(&player2, token.Player2_id)
-	
+
 	if c == 1 {
-		player1.Rate += int(32 * (((float32(player2.Rate) - float32(player1.Rate)) / 800) + 0.5))
-		player2.Rate -= int(32 * (((float32(player2.Rate) - float32(player1.Rate)) / 800) + 0.5))
+		sum := int(32 * (((float32(player2.Rate) - float32(player1.Rate)) / 800) + 0.5))
+		if sum < 1 {
+			sum = 1
+		}
+		player1.Rate += sum
+		player2.Rate -= sum
 	} else {
-		player1.Rate -= int(32 * (((float32(player2.Rate) - float32(player1.Rate)) / 800) + 0.5))
-		player2.Rate += int(32 * (((float32(player2.Rate) - float32(player1.Rate)) / 800) + 0.5))
+		sum := int(32 * (((float32(player1.Rate) - float32(player2.Rate)) / 800) + 0.5))
+		if sum < 1 {
+			sum = 1
+		}
+		player1.Rate -= sum
+		player2.Rate += sum
 	}
 	
 	db.Model(&player1).Update("rate", player1.Rate)
