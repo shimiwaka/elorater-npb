@@ -52,6 +52,20 @@ a:hover {
   padding: 10px;
 }
 
+.Vote-player {
+  padding: 15px;
+}
+
+.Stat-line {
+  display: table;
+}
+
+.Stat-cell {
+  display: table-cell;
+  border: solid 1px #999;
+  width: 65px;
+}
+
 .App-link {
   color: #61dafb;
 }

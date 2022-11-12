@@ -38,17 +38,27 @@ type Props = {
 const ShowPitchingStat = ( {stat} : {stat: PitchingStat} ) => {
   if (stat.game === 0) return null;
   return (
-    <div>
-      <div>
-        {stat.year !== "国内通算" ? stat.year + "年" : ""}　
-        {stat.game}試合 　
-        {stat.win}勝 　
-        {stat.lose}敗 　
-        {stat.era} 
+    <div className="Stat-line">
+      <div className="Stat-cell">
+        {stat.year !== "国内通算" ? stat.year + "年" : "国内通算"}
       </div>
-      <div>
-        {stat.inning}回　
-        {stat.k}奪三振
+      <div className="Stat-cell">
+        {stat.game}試合
+      </div>
+      <div className="Stat-cell">
+        {stat.win}勝
+      </div>
+      <div className="Stat-cell">
+        {stat.lose}敗
+      </div>
+      <div className="Stat-cell">
+       {stat.era.toFixed(2)} 
+      </div>
+      <div className="Stat-cell">
+        {stat.inning}回
+      </div>
+      <div className="Stat-cell">
+        {stat.k}K
       </div>
     </div>
   )
@@ -57,16 +67,26 @@ const ShowPitchingStat = ( {stat} : {stat: PitchingStat} ) => {
 const ShowBattingStat = ( {stat} : {stat: BattingStat} ) => {
   if (stat.hit < 50) return null;
   return (
-    <div>
-      <div>
-        {stat.year !== "国内通算" ? stat.year + "年" : ""}　
-        {stat.avg}　
-        {stat.hr}本　
-        {stat.rbi}打点　
-        OPS{stat.ops}
+    <div className="Stat-line">
+      <div className="Stat-cell">
+        {stat.year !== "国内通算" ? stat.year + "年" : "国内通算"}
       </div>
-      <div>
-        {stat.game}試合　
+      <div className="Stat-cell">
+        {stat.game}試合
+      </div>
+      <div className="Stat-cell">
+        {stat.avg >= 1 ? "1.00" : stat.avg.toFixed(3).slice(1)}
+      </div>
+      <div className="Stat-cell">
+        {stat.hr}本　
+      </div>
+      <div className="Stat-cell">
+        {stat.rbi}打点　
+      </div>
+      <div className="Stat-cell">
+        OPS{stat.ops >= 1 ? stat.ops.toFixed(3) : stat.ops.toFixed(3).slice(1) }
+      </div>
+      <div className="Stat-cell">
         {stat.hit}安打
       </div>
     </div>
@@ -76,12 +96,15 @@ const ShowBattingStat = ( {stat} : {stat: BattingStat} ) => {
 const VotePlayer = ( { num, player, onClickFunc } : Props) => {
   return (
     <button onClick={() => onClickFunc(num)}>
-      <div>{player.name}</div>
-      <div>{player.birth}</div>
-      <div><ShowPitchingStat stat={player.pitchingTotal}/></div>
-      <div><ShowPitchingStat stat={player.pitchingCareerHigh}/></div>
-      <div><ShowBattingStat stat={player.battingTotal}/></div>
-      <div><ShowBattingStat stat={player.battingCareerHigh}/></div>
+      <div>{player.name} ({player.birth} )</div>
+      <div className="Stat-table">
+        <div>[投手成績]</div>
+        <ShowPitchingStat stat={player.pitchingCareerHigh}/>
+        <ShowPitchingStat stat={player.pitchingTotal}/>
+        <div>[打者成績]</div>
+        <ShowBattingStat stat={player.battingCareerHigh}/>
+        <ShowBattingStat stat={player.battingTotal}/>
+      </div>
     </button>
   )
 }
