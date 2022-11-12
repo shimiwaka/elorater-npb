@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 import React from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const targetURL: string = process.env.REACT_APP_BASE_URL || "";
 
@@ -36,14 +38,33 @@ interface PitchingStat {
 const Player = () => {
   const params = useParams();
   const [player, setPlayer] = React.useState<PlayerAllData>();
+  const [error, setError] = React.useState<string>("");
 
   React.useEffect(() => {
-    axios.get(targetURL + "player/" + params.id).then((response) => {
+    axios.get(targetURL + "player/" + params.id)
+    .then((response) => {
       setPlayer(response.data);
+    })
+    .catch((error : any) => {
+      setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
     });
   }, []);
 
-  if(!player) return (<div>loading...</div>)
+  if (error) {
+    return (
+      <div>
+        {error}
+      </div>
+    )
+  }
+
+  if (!player) {
+    return (
+      <div>
+        <FontAwesomeIcon icon={faSpinner} />
+      </div>
+    )
+  }
 
   return (
     <ul>

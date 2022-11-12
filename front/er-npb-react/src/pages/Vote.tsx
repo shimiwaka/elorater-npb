@@ -13,15 +13,19 @@ const Vote = () => {
   const [error, setError] = React.useState<string>("");
 
   React.useEffect(() => {
-    axios.get(targetURL + "pick-up").then((response) => {
+    axios.get(targetURL + "pick-up")
+    .then((response) => {
       if(response.data.error) {
-        setError("サーバーエラーが発生しました。");
+        setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
         return;
       }
 
       setToken(response.data.token);
       setPlayer1(response.data.player1);
       setPlayer2(response.data.player2);
+    })
+    .catch((error : any) => {
+      setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
     });
   }, []);
 
@@ -32,23 +36,24 @@ const Vote = () => {
       </div>
     )
   }
+
   if (!player1 || !player2) {
     return (
       <div>
-        {error}
         <FontAwesomeIcon icon={faSpinner} />
       </div>
     )
   }
 
   function select( num : number ){
-    axios.get(targetURL + "vote?c=" + num + "&token=" + token).then((response) => {
+    axios.get(targetURL + "vote?c=" + num + "&token=" + token)
+    .then((response) => {
       if(response.data.error) {
-        console.log("Error occured");
+        setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
       }
       axios.get(targetURL + "pick-up").then((response) => {
         if(response.data.error) {
-          console.log("Error occured");
+          setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
         }
   
         setToken(response.data.token);

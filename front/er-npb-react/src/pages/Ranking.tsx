@@ -1,6 +1,8 @@
 import axios from "axios";
 import React from 'react';
 import { Routes, Route, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const targetURL: string = process.env.REACT_APP_BASE_URL || "";
 
@@ -13,18 +15,38 @@ type RankedPlayer = {
 const Ranking = () => {
   const [players, setPlayers] = React.useState<RankedPlayer[]>([]);
   const [page, setPage] = React.useState(0);
+  const [error, setError] = React.useState<string>("");
 
   React.useEffect(() => {
-    axios.get(targetURL + "ranking?p=" + page).then((response) => {
+    axios.get(targetURL + "ranking?p=" + page)
+    .then((response) => {
       if(response.data.error) {
-        console.log("Error occured");
+        setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
+        return;
       }
 
       setPlayers(response.data.players);
+    })
+    .catch((error : any) => {
+      setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
     });
   }, []);
 
-  if(!players) return (<div>loading...</div>);
+  if (error) {
+    return (
+      <div>
+        {error}
+      </div>
+    )
+  }
+
+  if (!players) {
+    return (
+      <div>
+        <FontAwesomeIcon icon={faSpinner} />
+      </div>
+    )
+  }
 
   const prev = () => {
     if (page <= 0){
