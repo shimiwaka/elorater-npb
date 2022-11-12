@@ -2,7 +2,7 @@ import axios from "axios";
 import { useParams } from 'react-router-dom';
 import React from 'react';
 
-const targetURL: string = "http://192.168.0.4:9999/";
+const targetURL: string = process.env.REACT_APP_BASE_URL || "";
 
 interface PlayerAllData {
   name: string;

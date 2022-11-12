@@ -2,7 +2,7 @@ import axios from "axios";
 import React from 'react';
 import { Routes, Route, Link } from "react-router-dom";
 
-const targetURL: string = "http://192.168.0.4:9999/";
+const targetURL: string = process.env.REACT_APP_BASE_URL || "";
 
 type RankedPlayer = {
   name: string;
