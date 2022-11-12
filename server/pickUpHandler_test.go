@@ -49,7 +49,12 @@ func doPickUpTest(t *testing.T, db *gorm.DB, tc PickUpTestCase) {
 	} else {
 		r := PickUpResponse{}
 		token := Token{}
-		json.Unmarshal(raw, &r)
+		err := json.Unmarshal(raw, &r)
+
+		if err != nil {
+			panic("failed to unmarshal response")
+		}
+
 		db.First(&token, "token = ?", r.Token)
 		assert.Equal(r.Player1.ID, token.Player1_id)
 		assert.Equal(r.Player2.ID, token.Player2_id)
@@ -76,7 +81,11 @@ func doPickUpTestUnusual(t *testing.T, db *gorm.DB) {
 	raw, _ := io.ReadAll(resp.Body)
 
 	r := PickUpResponse{}
-	json.Unmarshal(raw, &r)
+	err := json.Unmarshal(raw, &r)
+
+	if err != nil {
+		panic("failed to unmarshal response")
+	}
 
 	assert.Equal(r.Player1.Name, r.Player2.Name)
 }
@@ -88,7 +97,10 @@ func TestPickUp(t *testing.T) {
 		panic("failed to load settings_test.json")
 	}
 
-	json.Unmarshal(raw, &s)
+	err = json.Unmarshal(raw, &s)
+	if err != nil {
+		panic("failed to unmarshall settings")
+	}
 
 	connectQuery := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)

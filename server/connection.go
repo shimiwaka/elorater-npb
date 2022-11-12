@@ -16,7 +16,10 @@ func connectDB() *gorm.DB {
 		return nil
 	}
 
-	json.Unmarshal(raw, &s)
+	err = json.Unmarshal(raw, &s)
+	if err != nil {
+		return nil
+	}
 
 	connectQuery := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)

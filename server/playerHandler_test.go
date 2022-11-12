@@ -30,7 +30,11 @@ func doShowPlayerDataTest(t *testing.T, db *gorm.DB) {
 
 	raw, _ := io.ReadAll(resp.Body)
 	var player Player
-	json.Unmarshal(raw, &player)
+	err := json.Unmarshal(raw, &player)
+	
+	if err != nil {
+		panic("failed to unmarshal response")
+	}
 
 	assert.Equal("dummy", player.Name)
 	assert.Equal(1500, player.Rate)
@@ -65,12 +69,20 @@ func TestShowPlayerData(t *testing.T) {
 		panic("failed to load settings_test.json")
 	}
 
-	json.Unmarshal(raw, &s)
+	err = json.Unmarshal(raw, &s)
+
+	if err != nil {
+		panic("failed to unmarshal settings")
+	}
 
 	connectQuery := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)
 
 	db, err := gorm.Open("mysql", connectQuery)
+
+	if err != nil {
+		panic("failed to connect test db, please exec `docker-compose up -d`")
+	}
 
 	doShowPlayerDataTest(t, db)
 	doShowPlayerDataExceptionTest(t, db)

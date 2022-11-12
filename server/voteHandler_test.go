@@ -73,7 +73,11 @@ func TestVote(t *testing.T) {
 		panic("failed to load settings_test.json")
 	}
 
-	json.Unmarshal(raw, &s)
+	err = json.Unmarshal(raw, &s)
+
+	if err != nil {
+		panic("failed to unmarshal settings")
+	}
 
 	connectQuery := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)
