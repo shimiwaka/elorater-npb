@@ -1,25 +1,25 @@
 package main
 
 import (
-	"net/http"
-	"fmt"
-	"strconv"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strconv"
 
 	"github.com/jinzhu/gorm"
 )
 
 type rankingHandler struct{}
 
-type RankingResponse struct{
-	Players []RankedPlayer	`json:"players"`
+type RankingResponse struct {
+	Players []RankedPlayer `json:"players"`
 }
 
 type RankedPlayer struct {
-	Name string				`json:"name"`
-	Rate int				`json:"rate"`
-	Id uint					`json:"id"`
+	Name string `json:"name"`
+	Rate int    `json:"rate"`
+	Id   uint   `json:"id"`
 }
 
 func ranking(db *gorm.DB, w http.ResponseWriter, r *http.Request) {

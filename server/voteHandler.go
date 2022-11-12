@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 	"strconv"
 
 	"github.com/jinzhu/gorm"
@@ -56,7 +56,7 @@ func vote(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		player1.Rate -= sum
 		player2.Rate += sum
 	}
-	
+
 	db.Model(&player1).Update("rate", player1.Rate)
 	db.Model(&player2).Update("rate", player2.Rate)
 

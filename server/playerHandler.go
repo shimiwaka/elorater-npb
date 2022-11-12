@@ -1,11 +1,11 @@
 package main
 
 import (
-	"net/http"
-	"fmt"
-	"strconv"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"

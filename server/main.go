@@ -13,17 +13,17 @@ func main() {
 
 	rootPath := os.Getenv("SCRIPT_NAME")
 
-	router.Handle(rootPath + "/player/{num}", setCommonHeader(&playerHandler{}))
-	router.Handle(rootPath + "/pick-up", setCommonHeader(&pickUpHandler{}))
-	router.Handle(rootPath + "/vote", setCommonHeader(&voteHandler{}))
-	router.Handle(rootPath + "/ranking", setCommonHeader(&rankingHandler{}))
-	router.Handle(rootPath + "/ping", &pingHandler{})
+	router.Handle(rootPath+"/player/{num}", setCommonHeader(&playerHandler{}))
+	router.Handle(rootPath+"/pick-up", setCommonHeader(&pickUpHandler{}))
+	router.Handle(rootPath+"/vote", setCommonHeader(&voteHandler{}))
+	router.Handle(rootPath+"/ranking", setCommonHeader(&rankingHandler{}))
+	router.Handle(rootPath+"/ping", &pingHandler{})
 
 	server := &http.Server{
-		Addr:         ":9999",
-		Handler:      router,
+		Addr:    ":9999",
+		Handler: router,
 	}
 
-	server.ListenAndServe()  
+	server.ListenAndServe()
 	// cgi.Serve(router)
 }

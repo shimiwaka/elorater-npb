@@ -2,23 +2,23 @@ package main
 
 import (
 	"encoding/json"
-	"testing"
-	"os"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
-	"io"
+	"os"
+	"testing"
 
 	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
 )
 
 type PickUpTestCase struct {
-	Name string
-	DummyPlayerNum int
-	ExpectStatus int
+	Name               string
+	DummyPlayerNum     int
+	ExpectStatus       int
 	ExpectResponseBody string
-	RatedDummy []DummyPlayer
+	RatedDummy         []DummyPlayer
 }
 
 func doPickUpTest(t *testing.T, db *gorm.DB, tc PickUpTestCase) {
@@ -91,7 +91,7 @@ func TestPickUp(t *testing.T) {
 	json.Unmarshal(raw, &s)
 
 	connectQuery := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-					s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)
+		s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)
 
 	db, err := gorm.Open("mysql", connectQuery)
 
@@ -99,35 +99,35 @@ func TestPickUp(t *testing.T) {
 		panic("failed to connect test db, please exec `docker-compose up -d`")
 	}
 
-	tests := []PickUpTestCase {
-			{	Name: "there are no players",
-				DummyPlayerNum: 0,
-				ExpectStatus: http.StatusInternalServerError,
-				ExpectResponseBody: "{\"error\": true, \"message\": \"no player data in database\"}",
-			},
-			{	Name: "there is 1 player",
-				DummyPlayerNum: 1,
-				ExpectStatus: http.StatusInternalServerError,
-				ExpectResponseBody: "{\"error\": true, \"message\": \"no player data in database\"}",
-			},
-			{	Name: "there are 2 player",
-				DummyPlayerNum: 2,
-				ExpectStatus: http.StatusOK,
-				ExpectResponseBody: "",
-			},
-			{	Name: "there is high rate player",
-				DummyPlayerNum: 1,
-				ExpectStatus: http.StatusOK,
-				ExpectResponseBody: "",
-				RatedDummy: []DummyPlayer {{ Name: "high_rate_dummy", Rate: 2000 }},
-			},
-			{	Name: "there is low rate player",
-				DummyPlayerNum: 1,
-				ExpectStatus: http.StatusOK,
-				ExpectResponseBody: "",
-				RatedDummy: []DummyPlayer {{ Name: "low_rate_dummy", Rate: 1000 }},
-			},
-		}
+	tests := []PickUpTestCase{
+		{Name: "there are no players",
+			DummyPlayerNum:     0,
+			ExpectStatus:       http.StatusInternalServerError,
+			ExpectResponseBody: "{\"error\": true, \"message\": \"no player data in database\"}",
+		},
+		{Name: "there is 1 player",
+			DummyPlayerNum:     1,
+			ExpectStatus:       http.StatusInternalServerError,
+			ExpectResponseBody: "{\"error\": true, \"message\": \"no player data in database\"}",
+		},
+		{Name: "there are 2 player",
+			DummyPlayerNum:     2,
+			ExpectStatus:       http.StatusOK,
+			ExpectResponseBody: "",
+		},
+		{Name: "there is high rate player",
+			DummyPlayerNum:     1,
+			ExpectStatus:       http.StatusOK,
+			ExpectResponseBody: "",
+			RatedDummy:         []DummyPlayer{{Name: "high_rate_dummy", Rate: 2000}},
+		},
+		{Name: "there is low rate player",
+			DummyPlayerNum:     1,
+			ExpectStatus:       http.StatusOK,
+			ExpectResponseBody: "",
+			RatedDummy:         []DummyPlayer{{Name: "low_rate_dummy", Rate: 1000}},
+		},
+	}
 
 	for _, tc := range tests {
 		doPickUpTest(t, db, tc)

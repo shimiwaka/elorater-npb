@@ -2,12 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"testing"
-	"os"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
-	"io"
+	"os"
+	"testing"
 
 	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
@@ -123,7 +123,7 @@ func TestRanking(t *testing.T) {
 	json.Unmarshal(raw, &s)
 
 	connectQuery := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-					s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)
+		s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)
 
 	db, err := gorm.Open("mysql", connectQuery)
 

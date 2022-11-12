@@ -2,12 +2,12 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"crypto/md5"
-	"net/http"
+	"encoding/json"
 	"fmt"
-	"time"
 	"math/rand"
+	"net/http"
+	"time"
 
 	"github.com/jinzhu/gorm"
 )
@@ -15,23 +15,23 @@ import (
 type pickUpHandler struct{}
 
 type PickUpResponse struct {
-	Error bool				`json:"error"`
-	Token string			`json:"token"`
-	Player1 PickUpPlayer	`json:"player1"`
-	Player2 PickUpPlayer	`json:"player2"`
+	Error   bool         `json:"error"`
+	Token   string       `json:"token"`
+	Player1 PickUpPlayer `json:"player1"`
+	Player2 PickUpPlayer `json:"player2"`
 }
 
 type PickUpPlayer struct {
-	ID uint							`json:"id"`
-	Name string						`json:"name"`
-	Birth string					`json:"birth"`
-	BT string						`json:"bt"`
-	PitchingCareerHigh PitchingStat	`json:"pitchingCareerHigh"`
-	BattingCareerHigh BattingStat	`json:"battingCareerHigh"`
-	PitchingTotal PitchingStat		`json:"pitchingTotal"`
-	BattingTotal BattingStat		`json:"battingTotal"`
-	PitchingMLBTotal PitchingStat	`json:"pitchingMLBTotal"`
-	BattingMLBTotal BattingStat		`json:"battingMLBTotal"`
+	ID                 uint         `json:"id"`
+	Name               string       `json:"name"`
+	Birth              string       `json:"birth"`
+	BT                 string       `json:"bt"`
+	PitchingCareerHigh PitchingStat `json:"pitchingCareerHigh"`
+	BattingCareerHigh  BattingStat  `json:"battingCareerHigh"`
+	PitchingTotal      PitchingStat `json:"pitchingTotal"`
+	BattingTotal       BattingStat  `json:"battingTotal"`
+	PitchingMLBTotal   PitchingStat `json:"pitchingMLBTotal"`
+	BattingMLBTotal    BattingStat  `json:"battingMLBTotal"`
 }
 
 func pickUp(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
@@ -59,7 +59,7 @@ func pickUp(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 
 	loop := 0
-	for player2.Rate == 0  {
+	for player2.Rate == 0 {
 		db.Where("rate > ?", min).Where("rate < ?", max).Where("id != ?", player1.ID).Limit(1).Offset(rand.Intn(count2)).Find(&player2)
 		loop++
 		if loop >= 1000 {
@@ -88,28 +88,28 @@ func pickUp(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	resp := PickUpResponse{Error: false, Token: tokenString}
 
 	resp.Player1 = PickUpPlayer{
-		ID: player1.ID,
-		Name: player1.Name,
-		Birth: player1.Birth,
-		BT: player1.BT,
-		PitchingTotal: getTotalPitchingStat(player1),
-		BattingTotal: getTotalBattingStat(player1),
-		PitchingMLBTotal: getMLBTotalPitchingStat(player1),
-		BattingMLBTotal: getMLBTotalBattingStat(player1),
-		BattingCareerHigh: getCareerHighBattingStat(player1),
+		ID:                 player1.ID,
+		Name:               player1.Name,
+		Birth:              player1.Birth,
+		BT:                 player1.BT,
+		PitchingTotal:      getTotalPitchingStat(player1),
+		BattingTotal:       getTotalBattingStat(player1),
+		PitchingMLBTotal:   getMLBTotalPitchingStat(player1),
+		BattingMLBTotal:    getMLBTotalBattingStat(player1),
+		BattingCareerHigh:  getCareerHighBattingStat(player1),
 		PitchingCareerHigh: getCareerHighPitchingStat(player1),
 	}
 
 	resp.Player2 = PickUpPlayer{
-		ID: player2.ID,
-		Name: player2.Name,
-		Birth: player2.Birth,
-		BT: player2.BT,
-		PitchingTotal: getTotalPitchingStat(player2),
-		BattingTotal: getTotalBattingStat(player2),
-		PitchingMLBTotal: getMLBTotalPitchingStat(player2),
-		BattingMLBTotal: getMLBTotalBattingStat(player2),
-		BattingCareerHigh: getCareerHighBattingStat(player2),
+		ID:                 player2.ID,
+		Name:               player2.Name,
+		Birth:              player2.Birth,
+		BT:                 player2.BT,
+		PitchingTotal:      getTotalPitchingStat(player2),
+		BattingTotal:       getTotalBattingStat(player2),
+		PitchingMLBTotal:   getMLBTotalPitchingStat(player2),
+		BattingMLBTotal:    getMLBTotalBattingStat(player2),
+		BattingCareerHigh:  getCareerHighBattingStat(player2),
 		PitchingCareerHigh: getCareerHighPitchingStat(player2),
 	}
 

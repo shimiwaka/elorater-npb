@@ -25,16 +25,16 @@ func setDummyPlayer(db *gorm.DB, name string, rate int) uint {
 	batting := BattingStat{Year: "2000", Avg: 0.300}
 	pitching := PitchingStat{Year: "2000", Era: 2.00}
 	player := Player{Name: name, Rate: rate,
-					Pitching: []PitchingStat{pitching},
-					Batting: []BattingStat{batting},
-					}
+		Pitching: []PitchingStat{pitching},
+		Batting:  []BattingStat{batting},
+	}
 	db.Create(&player)
 	return player.ID
 }
 
 func setDummyToken(db *gorm.DB, rate []int) {
 	token := Token{Token: "DUMMY",
-					Player1_id: setDummyPlayer(db, "dummy1", rate[0]),
-					Player2_id: setDummyPlayer(db, "dummy2", rate[1])}
+		Player1_id: setDummyPlayer(db, "dummy1", rate[0]),
+		Player2_id: setDummyPlayer(db, "dummy2", rate[1])}
 	db.Create(&token)
 }

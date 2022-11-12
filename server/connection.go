@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -19,7 +19,7 @@ func connectDB() *gorm.DB {
 	json.Unmarshal(raw, &s)
 
 	connectQuery := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-					s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)
+		s.DB_username, s.DB_pass, s.DB_host, s.DB_port, s.DB_name)
 
 	db, err := gorm.Open("mysql", connectQuery)
 

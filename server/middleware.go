@@ -13,7 +13,7 @@ func setCommonHeader(h http.Handler) http.Handler {
 		w.Header().Set("Content-Type", "application/json")
 
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		h.ServeHTTP(w, r)
 	})
 }
