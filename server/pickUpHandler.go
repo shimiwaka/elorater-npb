@@ -22,6 +22,7 @@ type PickUpResponse struct {
 }
 
 type PickUpPlayer struct {
+	ID uint							`json:"id"`
 	Name string						`json:"name"`
 	Birth string					`json:"birth"`
 	BT string						`json:"bt"`
@@ -87,6 +88,7 @@ func pickUp(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	resp := PickUpResponse{Error: false, Token: tokenString}
 
 	resp.Player1 = PickUpPlayer{
+		ID: player1.ID,
 		Name: player1.Name,
 		Birth: player1.Birth,
 		BT: player1.BT,
@@ -99,6 +101,7 @@ func pickUp(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp.Player2 = PickUpPlayer{
+		ID: player2.ID,
 		Name: player2.Name,
 		Birth: player2.Birth,
 		BT: player2.BT,

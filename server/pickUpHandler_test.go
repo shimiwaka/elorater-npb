@@ -42,10 +42,17 @@ func doPickUpTest(t *testing.T, db *gorm.DB, tc PickUpTestCase) {
 
 	assert.Equal(tc.ExpectStatus, resp.StatusCode)
 
+	raw, _ := io.ReadAll(resp.Body)
 	if tc.ExpectResponseBody != "" {
-		raw, _ := io.ReadAll(resp.Body)
 		body := string(raw)
 		assert.Equal(tc.ExpectResponseBody, body)
+	} else {
+		r := PickUpResponse{}
+		token := Token{}
+		json.Unmarshal(raw, &r)
+		db.First(&token, "token = ?", r.Token)
+		assert.Equal(r.Player1.ID, token.Player1_id)
+		assert.Equal(r.Player2.ID, token.Player2_id)
 	}
 }
 
