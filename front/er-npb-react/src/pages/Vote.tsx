@@ -12,7 +12,7 @@ const Vote = () => {
   const [player2, setPlayer2] = React.useState(null);
   const [error, setError] = React.useState<string>("");
 
-  React.useEffect(() => {
+  const pickUp = () => {
     axios.get(targetURL + "pick-up")
     .then((response) => {
       if(response.data.error) {
@@ -27,7 +27,9 @@ const Vote = () => {
     .catch((error : any) => {
       setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
     });
-  }, []);
+  }
+
+  React.useEffect(() => { pickUp() }, []);
 
   if (error) {
     return (
@@ -45,21 +47,13 @@ const Vote = () => {
     )
   }
 
-  function select( num : number ){
+  const select = ( num : number ) => {
     axios.get(targetURL + "vote?c=" + num + "&token=" + token)
     .then((response) => {
       if(response.data.error) {
         setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
       }
-      axios.get(targetURL + "pick-up").then((response) => {
-        if(response.data.error) {
-          setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
-        }
-  
-        setToken(response.data.token);
-        setPlayer1(response.data.player1);
-        setPlayer2(response.data.player2);
-      });
+      pickUp();
     });
   }
 
