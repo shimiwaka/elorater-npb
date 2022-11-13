@@ -2,6 +2,7 @@ import './App.css';
 import Vote from './pages/Vote'
 import Ranking from './pages/Ranking'
 import Player from './pages/Player'
+import What from './pages/What'
 import { Routes, Route, Link } from "react-router-dom";
 
 const App = () => {
@@ -21,7 +22,7 @@ const App = () => {
           <Link to="ranking">[ランキング]</Link>
         </span>
         <span className="Menu-item">
-          [このサイトは？]
+         <Link to="what"> [このサイトは？]</Link>
         </span>
       </span>
     </header>
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/" element={<Vote />} />
         <Route path="ranking" element={<Ranking />} />
         <Route path="player/:id" element={<Player />} />
+        <Route path="what" element={<What />} />
       </Routes>
       <div className="Credit">
         <hr/>
