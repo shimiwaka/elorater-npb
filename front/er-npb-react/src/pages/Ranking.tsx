@@ -1,8 +1,8 @@
 import axios from "axios";
 import React from 'react';
-import { Routes, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const targetURL: string = process.env.REACT_APP_BASE_URL || "";
 
@@ -56,7 +56,7 @@ const Ranking = () => {
     setPage(page - 1);
     axios.get(targetURL + "ranking?p=" + newPage).then((response) => {
       if(response.data.error) {
-        console.log("Error occured");
+        setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
       }
 
       setPlayers(response.data.players);
@@ -68,7 +68,7 @@ const Ranking = () => {
     setPage(page + 1);
     axios.get(targetURL + "ranking?p=" + newPage).then((response) => {
       if(response.data.error) {
-        console.log("Error occured");
+        setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
       }
 
       setPlayers(response.data.players);
@@ -77,13 +77,34 @@ const Ranking = () => {
 
   return (
     <div>
-      <div>
+      <div className="Navigator">
         <button onClick={() => prev()}> &lt; </button>
         <button onClick={() => next()}> &gt; </button>
       </div>
-      <ul>
-        {players.map((value, i) => <li key={i}>{i+page*100+1}位 : {value.rate} : <Link to={`/player/` + value.id}>{value.name}</Link></li>)}
-      </ul>
+      <div className="Ranking">
+        {players.map(
+          (value, i) => 
+          {
+            return (
+              <div className="Ranking-line">
+                <div className="Ranking-small-cell" key={i}>
+                  {i+page*100+1}位
+                </div>
+                <div className="Ranking-small-cell" key={i}>
+                  {value.rate}
+                </div>
+                <div className="Ranking-cell">
+                  <Link to={`/player/` + value.id}>{value.name}</Link>
+                </div>
+              </div> 
+            )
+          }
+        )}
+      </div>
+      <div className="Navigator">
+        <button onClick={() => prev()}> &lt; </button>
+        <button onClick={() => next()}> &gt; </button>
+      </div>
     </div>
   );
 }

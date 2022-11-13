@@ -26,7 +26,7 @@
 
 header {
   width: 100%;
-  background-color: lightsteelblue;
+  background-color: paleturquoise;
   align-items: center;
 }
 
@@ -91,6 +91,39 @@ a:hover {
   width: 266px;
   border: solid 1px #999;
   background-color: wheat;
+}
+
+.Navigator {
+  padding: 10px;
+}
+
+.Ranking {
+  width: 100%;
+}
+
+.Ranking-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 370px;
+  margin: auto;
+}
+
+.Ranking-line:nth-child(2n+1) {
+  background-color: lightyellow;
+}
+
+.Ranking-small-cell {
+  width: 60px;
+}
+
+.Ranking-cell {
+  width: 250px;
+}
+
+button {
+  border-radius: 30px;
+  border: solid 1px #999;
 }
 
 .App-link {
