@@ -10,22 +10,20 @@ const App = () => {
     <header>
       <span className="Title">
         <Link to="/">
-          どっちがいい選手？
+          どっちがすごい？
         </Link>
       </span>
-      <nav className="Navi">
-        <ul className="Menu-group">
-          <li className="Menu-item">
-           <Link to="/">[投票]</Link>
-          </li>
-          <li className="Menu-item">
-            <Link to="ranking">[ランキング]</Link>
-          </li>
-          <li className="Menu-item">
-            [このサイトは？]
-          </li>
-        </ul>
-      </nav>
+      <span className="Menu-group">
+        <span className="Menu-item">
+          <Link to="/">[投票]</Link>
+        </span>
+        <span className="Menu-item">
+          <Link to="ranking">[ランキング]</Link>
+        </span>
+        <span className="Menu-item">
+          [このサイトは？]
+        </span>
+      </span>
     </header>
     <div className="App">
       <Routes>
