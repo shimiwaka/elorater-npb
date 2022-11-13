@@ -17,20 +17,21 @@ const Ranking = () => {
   const [page, setPage] = React.useState(0);
   const [error, setError] = React.useState<string>("");
 
-  React.useEffect(() => {
+  const getRanking = (page : number) => {
     axios.get(targetURL + "ranking?p=" + page)
     .then((response) => {
       if(response.data.error) {
         setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
         return;
       }
-
       setPlayers(response.data.players);
     })
     .catch((error : any) => {
       setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
     });
-  }, []);
+
+  }
+  React.useEffect(() => { getRanking(0) }, []);
 
   if (error) {
     return (
@@ -54,25 +55,16 @@ const Ranking = () => {
     }
     const newPage = page -1;
     setPage(page - 1);
-    axios.get(targetURL + "ranking?p=" + newPage).then((response) => {
-      if(response.data.error) {
-        setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
-      }
-
-      setPlayers(response.data.players);
-    });
+    getRanking(newPage);
   }
 
   const next = () => {
+    if (players.length !== 100) {
+      return
+    }
     const newPage = page + 1;
     setPage(page + 1);
-    axios.get(targetURL + "ranking?p=" + newPage).then((response) => {
-      if(response.data.error) {
-        setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
-      }
-
-      setPlayers(response.data.players);
-    });
+    getRanking(newPage);
   }
 
   return (

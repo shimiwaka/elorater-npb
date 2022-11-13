@@ -27,7 +27,13 @@ func ranking(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	players := []Player{}
 
 	page, _ := strconv.Atoi(r.URL.Query().Get("p"))
-	db.Limit(100).Offset(page * 100).Order("rate desc").Find(&players)
+	err := db.Limit(100).Offset(page * 100).Order("rate desc").Find(&players).Error
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to fetch player data\"}")
+		return
+	}
 
 	if len(players) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
