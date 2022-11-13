@@ -68,7 +68,7 @@ const Player = () => {
     .catch((error : any) => {
       setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
     });
-  }, []);
+  }, [params.id]);
 
   if (error) {
     return (
@@ -119,7 +119,7 @@ const Player = () => {
       }
         { player.pitching.map((stat) => {
           if(stat.game === 0){
-            return
+            return null;
           }
           return (
             <div className="Player-line">
@@ -174,7 +174,7 @@ const Player = () => {
       }
       { player.batting.map((stat) => {
         if(stat.hit === 0){
-          return
+          return null;
         }
         return (
           <div className="Player-line">
