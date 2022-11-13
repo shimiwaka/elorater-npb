@@ -23,6 +23,7 @@ interface BattingStat {
   hr: number;
   rbi: number;
   ops: number;
+  mlb: boolean;
 }
 
 interface PitchingStat {
@@ -33,6 +34,25 @@ interface PitchingStat {
   era: number;
   inning: number;
   k: number;
+  mlb: boolean;
+}
+
+const isPitcher = (player : PlayerAllData) : boolean => {
+  for (let i = 0; i < player.pitching.length; i++){
+    if(player.pitching[i].game > 0){
+      return true;
+    }
+  }
+  return false;
+}
+
+const isBatter = (player : PlayerAllData) : boolean => {
+  for (let i = 0; i < player.batting.length; i++){
+    if(player.batting[i].hit > 0){
+      return true;
+    }
+  }
+  return false;
 }
 
 const Player = () => {
@@ -67,15 +87,120 @@ const Player = () => {
   }
 
   return (
-    <ul>
-      <li>{player.name}</li>
-      <li>{player.birth}</li>
-      <li>{player.bt}</li>
-      { player.batting.map((value) =>
-         <li>{value.year} {value.avg} {value.hr} {value.rbi} {value.ops}</li>)}
-      { player.pitching.map((value) =>
-          <li>{value.year} {value.win} {value.lose} {value.inning} {value.era}</li>)}
-    </ul>
+    <div className="Player">
+      <div>{player.name}</div>
+      <div>{player.birth} {player.bt}</div>
+
+      { isPitcher(player) ? 
+        <>
+          <div className="Player-header">投手成績</div>
+          <div className="Player-line">
+            <div className="Player-cell">
+              年
+            </div>
+            <div className="Player-cell">
+              勝
+            </div>
+            <div className="Player-cell">
+              敗
+            </div>
+            <div className="Player-cell">
+              防御率
+            </div>
+            <div className="Player-cell">
+              投球回
+            </div>
+            <div className="Player-cell">
+              奪三振
+            </div>
+          </div>
+        </>
+         : "" 
+      }
+        { player.pitching.map((stat) => {
+          if(stat.game === 0){
+            return
+          }
+          return (
+            <div className="Player-line">
+              <div className="Player-cell">
+                {stat.year}
+                {stat.mlb && stat.year !== 'MLB通算' ? "\n(MLB)" : "" }
+              </div>
+              <div className="Player-cell">
+                {stat.win}
+              </div>
+              <div className="Player-cell">
+                {stat.lose}
+              </div>
+              <div className="Player-cell">
+                {stat.era.toFixed(2)}
+              </div>
+              <div className="Player-cell">
+               {stat.inning}
+              </div>
+              <div className="Player-cell">
+               {stat.k}
+              </div>
+            </div>
+          )
+       })}
+
+      { isBatter(player) ? 
+        <>
+          <div className="Player-header">打者成績</div>
+          <div className="Player-line">
+            <div className="Player-cell">
+              年
+            </div>
+            <div className="Player-cell">
+              打率
+            </div>
+            <div className="Player-cell">
+              HR
+            </div>
+            <div className="Player-cell">
+              打点
+            </div>
+            <div className="Player-cell">
+              安打
+            </div>
+            <div className="Player-cell">
+              OPS
+            </div>
+          </div>
+        </>
+         : "" 
+      }
+      { player.batting.map((stat) => {
+        if(stat.hit === 0){
+          return
+        }
+        return (
+          <div className="Player-line">
+            <div className="Player-cell">
+              {stat.year}
+              {stat.mlb && stat.year !== 'MLB通算' ? "\n(MLB)" : "" }
+            </div>
+            <div className="Player-cell">
+              {stat.avg >= 1 ? "1.00" : stat.avg.toFixed(3).slice(1)}
+            </div>
+            <div className="Player-cell">
+              {stat.hr}
+            </div>
+            <div className="Player-cell">
+              {stat.rbi}
+            </div>
+            <div className="Player-cell">
+              {stat.hit}
+            </div>
+            <div className="Player-cell">
+              {stat.ops >= 1 ? stat.ops.toFixed(3) : stat.ops.toFixed(3).slice(1) }
+            </div>
+          </div>
+        )
+      })}
+    </div>
   )
 }
 

@@ -121,6 +121,30 @@ a:hover {
   width: 250px;
 }
 
+.Player-header {
+  font-weight: bold;
+}
+
+.Player {
+  width: 100%;
+}
+
+.Player-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  margin: auto;
+}
+
+.Player-line:nth-child(2n+1) {
+  background-color: lightyellow;
+}
+
+.Player-cell {
+  width: 70px;
+}
+
 button {
   border-radius: 30px;
   border: solid 1px #999;
