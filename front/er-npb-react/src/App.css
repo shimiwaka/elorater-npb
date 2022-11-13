@@ -57,13 +57,25 @@ a:hover {
 }
 
 .Stat-line {
-  display: table;
+  display: flex;
 }
 
 .Stat-cell {
-  display: table-cell;
+  display: flex;
   border: solid 1px #999;
   width: 65px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.Stat-year {
+  height: 43px;
+}
+
+.Stat-header {
+  width: 266px;
+  border: solid 1px #999;
 }
 
 .App-link {
