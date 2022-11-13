@@ -141,7 +141,7 @@ const ShowBattingStat = ( {stat} : {stat: BattingStat} ) => {
 
 const VotePlayer = ( { num, player, onClickFunc } : Props) => {
   return (
-    <button onClick={() => onClickFunc(num)}>
+    <button onClick={() => onClickFunc(num)} className="Vote-button">
       <div className="Player-name">{player.name} ({player.birth})</div>
       <div className="Stat-table">
         <ShowPitchingHeader player={player}/>

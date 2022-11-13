@@ -56,6 +56,16 @@ a:hover {
   padding: 15px;
 }
 
+.Vote-button {
+  background-color: lightyellow;
+  border: solid 1px #999;
+  padding: 10px;
+}
+
+.Vote-button:hover {
+  background-color: lightgoldenrodyellow;
+}
+
 .Stat-line {
   display: flex;
 }
@@ -76,6 +86,7 @@ a:hover {
 .Stat-header {
   width: 266px;
   border: solid 1px #999;
+  background-color: wheat;
 }
 
 .App-link {
