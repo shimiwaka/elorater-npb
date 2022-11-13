@@ -23,6 +23,11 @@ type RankedPlayer struct {
 }
 
 func ranking(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	if db == nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"failed to db connection\"}")
+		return
+	}
 	resp := RankingResponse{}
 	players := []Player{}
 
@@ -58,4 +63,5 @@ func ranking(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 func (p *rankingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db := connectDB()
 	ranking(db, w, r)
+	db.Close()
 }

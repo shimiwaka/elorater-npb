@@ -129,4 +129,5 @@ func pickUp(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 func (p *pickUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db := connectDB()
 	pickUp(db, w, r)
+	db.Close()
 }

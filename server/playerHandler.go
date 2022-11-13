@@ -40,4 +40,5 @@ func (p *playerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db := connectDB()
 
 	showPlayerData(db, id, w, r)
+	db.Close()
 }

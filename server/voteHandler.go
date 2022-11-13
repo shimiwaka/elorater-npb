@@ -68,4 +68,5 @@ func vote(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 func (p *voteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	db := connectDB()
 	vote(db, w, r)
+	db.Close()
 }
