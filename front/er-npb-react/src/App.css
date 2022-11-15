@@ -126,6 +126,7 @@ a:hover {
 .Description {
   width: 85%;
   margin: auto;
+  text-align: left;
 }
 
 button {
