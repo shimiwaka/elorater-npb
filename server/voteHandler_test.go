@@ -64,6 +64,13 @@ func doVoteTest(t *testing.T, db *gorm.DB, tc VoteTestCase) {
 		assert.Equal(tc.ExpectSortedName[i], player.Name)
 		assert.Equal(tc.ExpectSortedRate[i], player.Rate)
 	}
+
+	if tc.ExpectStatus == http.StatusOK {
+		token := Token{}
+		db.Find(&token, "token =? ", tc.Token)
+
+		assert.Equal(uint(0), token.ID)
+	}
 }
 
 func TestVote(t *testing.T) {
