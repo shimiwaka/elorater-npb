@@ -4,7 +4,7 @@
 
 header {
   width: 100%;
-  background-color: lavenderblush;
+  background-color: gainsboro;
   align-items: center;
 }
 
@@ -39,13 +39,13 @@ a:hover {
 }
 
 .Vote-button {
-  background-color: lightyellow;
+  background-color: ghostwhite;
   border: solid 1px #999;
   padding: 10px;
 }
 
 .Vote-button:hover {
-  background-color: lightgoldenrodyellow;
+  background-color: whitesmoke;
 }
 
 .Stat-line {
@@ -68,7 +68,7 @@ a:hover {
 .Stat-header {
   width: 266px;
   border: solid 1px #999;
-  background-color: wheat;
+  background-color: ghostwhite;
 }
 
 .Navigator {
@@ -88,7 +88,7 @@ a:hover {
 }
 
 .Ranking-line:nth-child(2n+1) {
-  background-color: lightyellow;
+  background-color: whitesmoke;
 }
 
 .Ranking-small-cell {
@@ -116,7 +116,7 @@ a:hover {
 }
 
 .Player-line:nth-child(2n+1) {
-  background-color: lightyellow;
+  background-color: whitesmoke;
 }
 
 .Player-cell {
@@ -131,10 +131,6 @@ a:hover {
 button {
   border-radius: 30px;
   border: solid 1px #999;
-}
-
-.App-link {
-  color: #61dafb;
 }
 
 .Credit {
