@@ -8,6 +8,9 @@ test('test Vote component', async () => {
 
   await screen.findAllByRole("button");
 
+  //[TODO] I want to increase test coverage, but It's a hassle, so I'm leaving it alone.
   expect(screen.getByText(/安部.+友裕/)).toBeInTheDocument();
+  expect(screen.getByText(/1989.6.24生/)).toBeInTheDocument();
   expect(screen.getByText(/緋本.+祥好/)).toBeInTheDocument();
+  expect(screen.getByText(/1935.3.6生/)).toBeInTheDocument();
 });
