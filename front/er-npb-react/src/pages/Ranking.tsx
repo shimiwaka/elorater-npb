@@ -78,11 +78,11 @@ const Ranking = () => {
           (value, i) => 
           {
             return (
-              <div className="Ranking-line">
-                <div className="Ranking-small-cell" key={i}>
+              <div className="Ranking-line" key={i}>
+                <div className="Ranking-small-cell">
                   {i+page*100+1}位
                 </div>
-                <div className="Ranking-small-cell" key={i}>
+                <div className="Ranking-small-cell">
                   {value.rate}
                 </div>
                 <div className="Ranking-cell">

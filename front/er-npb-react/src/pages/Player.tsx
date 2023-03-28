@@ -85,16 +85,17 @@ const Player = () => {
       </div>
     )
   }
+  let i = 0;
 
   return (
     <div className="Player">
-      <div>{player.name}</div>
-      <div>{player.birth} {player.bt}</div>
+      <div key="name">{player.name}</div>
+      <div key="birth_bt">{player.birth} {player.bt}</div>
 
       { isPitcher(player) ? 
         <>
-          <div className="Player-header">投手成績</div>
-          <div className="Player-line">
+          <div className="Player-header" key="p-header">投手成績</div>
+          <div className="Player-line" key={i++}>
             <div className="Player-cell">
               年
             </div>
@@ -122,7 +123,7 @@ const Player = () => {
             return null;
           }
           return (
-            <div className="Player-line">
+            <div className="Player-line" key={i++}>
               <div className="Player-cell">
                 {stat.year}
                 {stat.mlb && stat.year !== 'MLB通算' ? "\n(MLB)" : "" }
@@ -148,8 +149,8 @@ const Player = () => {
 
       { isBatter(player) ? 
         <>
-          <div className="Player-header">打者成績</div>
-          <div className="Player-line">
+          <div className="Player-header" key="b-header">打者成績</div>
+          <div className="Player-line" key={i++}>
             <div className="Player-cell">
               年
             </div>
@@ -177,7 +178,7 @@ const Player = () => {
           return null;
         }
         return (
-          <div className="Player-line">
+          <div className="Player-line" key={i++}>
             <div className="Player-cell">
               {stat.year}
               {stat.mlb && stat.year !== 'MLB通算' ? "\n(MLB)" : "" }
