@@ -17,6 +17,7 @@ func main() {
 	router.Handle(rootPath+"/pick-up", setCommonHeader(&pickUpHandler{}))
 	router.Handle(rootPath+"/vote", setCommonHeader(&voteHandler{}))
 	router.Handle(rootPath+"/ranking", setCommonHeader(&rankingHandler{}))
+	router.Handle(rootPath+"/search", setCommonHeader(&searchHandler{}))
 	router.Handle(rootPath+"/ping", &pingHandler{})
 
 	server := &http.Server{
