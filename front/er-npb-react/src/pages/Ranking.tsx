@@ -16,20 +16,34 @@ const Ranking = () => {
   const [players, setPlayers] = React.useState<RankedPlayer[]>([]);
   const [page, setPage] = React.useState(0);
   const [error, setError] = React.useState<string>("");
+  const [query, setQuery] = React.useState<string>("");
 
   const getRanking = (page : number) => {
-    axios.get(targetURL + "ranking?p=" + page)
-    .then((response) => {
-      if(response.data.error) {
+    if (query != "") {
+      axios.get(targetURL + "search?p=" + page + "&q=" + query)
+      .then((response) => {
+        if(response.data.error) {
+          setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
+          return;
+        }
+        setPlayers(response.data.players);
+      })
+      .catch((error : any) => {
+        setPlayers([]);
+      });
+    } else {
+      axios.get(targetURL + "ranking?p=" + page)
+      .then((response) => {
+        if(response.data.error) {
+          setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
+          return;
+        }
+        setPlayers(response.data.players);
+      })
+      .catch((error : any) => {
         setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
-        return;
-      }
-      setPlayers(response.data.players);
-    })
-    .catch((error : any) => {
-      setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
-    });
-
+      });
+    }
   }
   React.useEffect(() => { getRanking(0) }, []);
 
@@ -47,6 +61,10 @@ const Ranking = () => {
         <FontAwesomeIcon icon={faSpinner} />
       </div>
     )
+  }
+
+  const setSearchQuery = (query : string) => {
+    setQuery(query);
   }
 
   const prev = () => {
@@ -69,6 +87,10 @@ const Ranking = () => {
 
   return (
     <div>
+      <div className="SearchBox">
+        <input placeholder="選手の名前を入力" onChange={(e) => setSearchQuery(e.target.value)}/>
+        <button onClick={() => getRanking(0)}>検索</button>
+      </div>
       <div className="Navigator">
         <button onClick={() => prev()}> &lt; </button>
         <button onClick={() => next()}> &gt; </button>
