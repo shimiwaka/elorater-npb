@@ -30,9 +30,16 @@ func search(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 	resp := SearchResponse{}
 	players := []Player{}
+	query := r.URL.Query().Get("q")
+
+	if query == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"incorrect search query\"}")
+		return
+	}
 
 	page, _ := strconv.Atoi(r.URL.Query().Get("p"))
-	err := db.Limit(100).Offset(page * 100).Order("rate desc").Find(&players).Error
+	err := db.Limit(100).Offset(page * 100).Where("name LIKE ?", "%" + query + "%").Order("rate desc").Find(&players).Error
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -42,7 +49,7 @@ func search(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 	if len(players) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(w, "{\"error\": true, \"message\": \"incorrect specified page number\"}")
+		fmt.Fprint(w, "{\"error\": true, \"message\": \"incorrect specified page number or search query\"}")
 		return
 	}
 
