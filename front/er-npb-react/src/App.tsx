@@ -11,18 +11,18 @@ const App = () => {
     <header>
       <span className="Title">
         <Link to="/">
-          どっちがすごい？
+          NPBイロレーティング
         </Link>
       </span>
       <span className="Menu-group">
         <span className="Menu-item">
-          <Link to="/">[投票]</Link>
+          <Link to="/">▼投票</Link>
         </span>
         <span className="Menu-item">
-          <Link to="ranking">[ランキング]</Link>
+          <Link to="ranking">▼ランキング</Link>
         </span>
         <span className="Menu-item">
-         <Link to="description"> [このサイトは？]</Link>
+         <Link to="description">▼このサイトは？</Link>
         </span>
       </span>
     </header>

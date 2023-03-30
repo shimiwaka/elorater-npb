@@ -58,14 +58,17 @@ const Vote = () => {
   }
 
   return (
-    <div className="Vote-players">
-      <div className="Vote-player">
-        <VotePlayer player={player1} num={1} onClickFunc={(i : number) => select(i)}/>
+    <>
+      <div className="Header">どっちがいい選手？</div>
+      <div className="Vote-players">
+        <div className="Vote-player">
+          <VotePlayer player={player1} num={1} onClickFunc={(i : number) => select(i)}/>
+        </div>
+        <div>
+          <VotePlayer player={player2} num={2} onClickFunc={(i : number) => select(i)}/>
+        </div>
       </div>
-      <div>
-        <VotePlayer player={player2} num={2} onClickFunc={(i : number) => select(i)}/>
-      </div>
-    </div>
+    </>
   )
 }
 
