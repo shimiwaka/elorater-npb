@@ -19,7 +19,7 @@ const Ranking = () => {
   const [query, setQuery] = React.useState<string>("");
 
   const getRanking = (page : number) => {
-    if (query != "") {
+    if (query !== "") {
       axios.get(targetURL + "search?p=" + page + "&q=" + query)
       .then((response) => {
         if(response.data.error) {
@@ -45,6 +45,7 @@ const Ranking = () => {
       });
     }
   }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => { getRanking(0) }, []);
 
   if (error) {
