@@ -89,7 +89,7 @@ const Player = () => {
 
   return (
     <div className="Player">
-      <div key="name">{player.name}</div>
+      <div key="name" className="Header">{player.name}</div>
       <div key="birth_bt">{player.birth} {player.bt}</div>
 
       { isPitcher(player) ? 

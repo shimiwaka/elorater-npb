@@ -88,7 +88,7 @@ const Ranking = () => {
 
   return (
     <div>
-      <div className="SearchBox">
+      <div className="Search-box">
         <input placeholder="選手の名前を入力" onChange={(e) => setSearchQuery(e.target.value)}/>
         <button onClick={() => getRanking(0)}>検索</button>
       </div>
