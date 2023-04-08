@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
-	// "net/http/cgi"
+	// "net/http"
+	"net/http/cgi"
 	"os"
 
 	"github.com/gorilla/mux"
@@ -25,9 +25,9 @@ func main() {
 		Handler: router,
 	}
 
-	err := server.ListenAndServe()
-	if err != nil {
-		return
-	}
-	// cgi.Serve(router)
+	// err := server.ListenAndServe()
+	// if err != nil {
+	// 	return
+	// }
+	cgi.Serve(router)
 }
