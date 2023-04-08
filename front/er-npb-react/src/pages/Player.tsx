@@ -23,6 +23,9 @@ interface BattingStat {
   hr: number;
   rbi: number;
   ops: number;
+  sb: number;
+  cs: number;
+  obp: number;
   mlb: boolean;
 }
 
@@ -34,6 +37,8 @@ interface PitchingStat {
   era: number;
   inning: number;
   k: number;
+  save: number;
+  hold: number;
   mlb: boolean;
 }
 
@@ -90,6 +95,7 @@ const Player = () => {
   return (
     <div className="Player">
       <div key="name" className="Header">{player.name}</div>
+      <div key="rate" className="Header">Rate:{player.rate}</div>
       <div key="birth_bt">{player.birth} {player.bt}</div>
 
       { isPitcher(player) ? 
@@ -113,6 +119,15 @@ const Player = () => {
             </div>
             <div className="Player-cell">
               奪三振
+            </div>
+            <div className="Player-cell">
+              セーブ
+            </div>
+            <div className="Player-cell">
+              ホールド
+            </div>
+            <div className="Player-cell">
+              勝率
             </div>
           </div>
         </>
@@ -143,6 +158,15 @@ const Player = () => {
               <div className="Player-cell">
                {stat.k}
               </div>
+              <div className="Player-cell">
+               {stat.save}
+              </div>
+              <div className="Player-cell">
+               {stat.hold}
+              </div>
+              <div className="Player-cell">
+               {(stat.win+stat.lose) == 0 ? "---" : (stat.win/(stat.win+stat.lose)).toFixed(3).slice(1)}
+              </div>
             </div>
           )
        })}
@@ -165,6 +189,15 @@ const Player = () => {
             </div>
             <div className="Player-cell">
               安打
+            </div>
+            <div className="Player-cell">
+              盗塁
+            </div>
+            <div className="Player-cell">
+              盗塁死
+            </div>
+            <div className="Player-cell">
+              出塁率
             </div>
             <div className="Player-cell">
               OPS
@@ -194,6 +227,15 @@ const Player = () => {
             </div>
             <div className="Player-cell">
               {stat.hit}
+            </div>
+            <div className="Player-cell">
+              {stat.sb}
+            </div>
+            <div className="Player-cell">
+              {stat.cs}
+            </div>
+            <div className="Player-cell">
+              {stat.obp >= 1 ? 1.00 : stat.obp.toFixed(3).slice(1) }
             </div>
             <div className="Player-cell">
               {stat.ops >= 1 ? stat.ops.toFixed(3) : stat.ops.toFixed(3).slice(1) }
