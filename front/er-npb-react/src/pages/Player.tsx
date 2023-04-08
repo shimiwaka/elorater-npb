@@ -165,7 +165,7 @@ const Player = () => {
                {stat.hold}
               </div>
               <div className="Player-cell">
-               {(stat.win+stat.lose) === 0 ? "---" : (stat.win > 0 && stat.lose == 0) ? "1.00" : (stat.win/(stat.win+stat.lose)).toFixed(3).slice(1)}
+               {(stat.win+stat.lose) === 0 ? "---" : (stat.win > 0 && stat.lose === 0) ? "1.00" : (stat.win/(stat.win+stat.lose)).toFixed(3).slice(1)}
               </div>
             </div>
           )
