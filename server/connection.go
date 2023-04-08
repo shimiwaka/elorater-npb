@@ -3,20 +3,19 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"os"
+	_ "embed"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
+//go:embed config/settings.json
+var configRawData []byte
+
 func connectDB() *gorm.DB {
 	s := Settings{}
-	raw, err := os.ReadFile("./config/settings.json")
-	if err != nil {
-		return nil
-	}
 
-	err = json.Unmarshal(raw, &s)
+	err := json.Unmarshal(configRawData, &s)
 	if err != nil {
 		return nil
 	}
