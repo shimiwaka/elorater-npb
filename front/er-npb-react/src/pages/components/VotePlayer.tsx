@@ -19,6 +19,8 @@ interface PitchingStat {
   era: number;
   inning: number;
   k: number;
+  save: number;
+  hold: number;
   mlb: boolean;
 }
 
@@ -29,6 +31,9 @@ interface BattingStat {
   avg: number;
   hr: number;
   rbi: number;
+  sb: number;
+  cs: number;
+  obp: number;
   ops: number;
   mlb: boolean;
 }
@@ -84,6 +89,17 @@ const ShowPitchingStat = ( {stat} : {stat: PitchingStat} ) => {
             {stat.k}K
           </div>
         </div>
+        <div className="Stat-line">
+          <div className="Stat-cell">
+            {stat.save}S
+          </div>
+          <div className="Stat-cell">
+            {stat.hold}H
+          </div>
+          <div className="Stat-cell">
+            勝率{(stat.win+stat.lose) == 0 ? "---" : (stat.win/(stat.win+stat.lose)).toFixed(3).slice(1)}
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -128,10 +144,21 @@ const ShowBattingStat = ( {stat} : {stat: BattingStat} ) => {
             {stat.game}試合
           </div>
           <div className="Stat-cell">
-            OPS{stat.ops >= 1 ? stat.ops.toFixed(3) : stat.ops.toFixed(3).slice(1) }
+            OBP{stat.obp >= 1 ? "1.00" : stat.obp.toFixed(3).slice(1)}
           </div>
           <div className="Stat-cell">
+            OPS{stat.ops >= 1 ? stat.ops.toFixed(3) : stat.ops.toFixed(3).slice(1) }
+          </div>
+        </div>
+        <div className="Stat-line">
+          <div className="Stat-cell">
             {stat.hit}安打
+          </div>
+          <div className="Stat-cell">
+            {stat.sb}盗塁
+          </div>
+          <div className="Stat-cell">
+            {stat.cs}盗塁死
           </div>
         </div>
       </div>
