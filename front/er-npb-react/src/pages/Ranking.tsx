@@ -97,24 +97,26 @@ const Ranking = () => {
         <button onClick={() => next()}> &gt; </button>
       </div>
       <div className="Ranking">
-        {players.map(
-          (value, i) => 
-          {
-            return (
-              <div className="Ranking-line" key={i}>
-                <div className="Ranking-small-cell">
-                  {i+page*100+1}位
-                </div>
-                <div className="Ranking-small-cell">
-                  {value.rate}
-                </div>
-                <div className="Ranking-cell">
-                  <Link to={`/player/` + value.id}>{value.name}</Link>
-                </div>
-              </div> 
-            )
-          }
-        )}
+        {players.length == 0 ? "対象となる選手がいません。" :
+          players.map(
+            (value, i) => 
+            {
+              return (
+                <div className="Ranking-line" key={i}>
+                  <div className="Ranking-small-cell">
+                    {i+page*100+1}位
+                  </div>
+                  <div className="Ranking-small-cell">
+                    {value.rate}
+                  </div>
+                  <div className="Ranking-cell">
+                    <Link to={`/player/` + value.id}>{value.name}</Link>
+                  </div>
+                </div> 
+              )
+            }
+          )
+        }
       </div>
       <div className="Navigator">
         <button onClick={() => prev()}> &lt; </button>
