@@ -97,7 +97,7 @@ const ShowPitchingStat = ( {stat} : {stat: PitchingStat} ) => {
             {stat.hold}H
           </div>
           <div className="Stat-cell">
-            勝率{(stat.win+stat.lose) == 0 ? "---" : (stat.win/(stat.win+stat.lose)).toFixed(3).slice(1)}
+            勝率{(stat.win+stat.lose) === 0 ? "---" : (stat.win/(stat.win+stat.lose)).toFixed(3).slice(1)}
           </div>
         </div>
       </div>

@@ -97,7 +97,7 @@ const Ranking = () => {
         <button onClick={() => next()}> &gt; </button>
       </div>
       <div className="Ranking">
-        {players.length == 0 ? "対象となる選手がいません。" :
+        {players.length === 0 ? "対象となる選手がいません。" :
           players.map(
             (value, i) => 
             {
