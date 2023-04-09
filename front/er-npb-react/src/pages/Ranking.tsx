@@ -59,7 +59,7 @@ const Ranking = () => {
   if (!players) {
     return (
       <div>
-        <FontAwesomeIcon icon={faSpinner} />
+        <FontAwesomeIcon icon={faSpinner} spin/>
       </div>
     )
   }

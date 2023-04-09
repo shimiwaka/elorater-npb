@@ -86,7 +86,7 @@ const Player = () => {
   if (!player) {
     return (
       <div>
-        <FontAwesomeIcon icon={faSpinner} />
+        <FontAwesomeIcon icon={faSpinner} spin/>
       </div>
     )
   }

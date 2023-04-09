@@ -43,7 +43,7 @@ const Vote = () => {
   if (!player1 || !player2) {
     return (
       <div>
-        <FontAwesomeIcon icon={faSpinner} />
+        <FontAwesomeIcon icon={faSpinner} spin/>
       </div>
     )
   }
@@ -55,15 +55,15 @@ const Vote = () => {
       if(response.data.error) {
         setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
       }
-      setLoading(false);
       pickUp();
+      setLoading(false);
     });
   }
 
   if (loading) {
     return (
       <div>
-        <FontAwesomeIcon icon={faSpinner} />
+        <FontAwesomeIcon icon={faSpinner} spin/>
       </div>
     )
   }
