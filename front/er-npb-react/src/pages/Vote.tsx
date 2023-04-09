@@ -11,6 +11,7 @@ const Vote = () => {
   const [player1, setPlayer1] = React.useState(null);
   const [player2, setPlayer2] = React.useState(null);
   const [error, setError] = React.useState<string>("");
+  const [loading, setLoading] = React.useState(false);
 
   const pickUp = () => {
     axios.get(targetURL + "pick-up")
@@ -48,13 +49,23 @@ const Vote = () => {
   }
 
   const select = ( num : number ) => {
+    setLoading(true);
     axios.get(targetURL + "vote?c=" + num + "&token=" + token)
     .then((response) => {
       if(response.data.error) {
         setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
       }
+      setLoading(false);
       pickUp();
     });
+  }
+
+  if (loading) {
+    return (
+      <div>
+        <FontAwesomeIcon icon={faSpinner} />
+      </div>
+    )
   }
 
   return (
