@@ -100,6 +100,7 @@ const Player = () => {
 
       { isPitcher(player) ? 
         <>
+          <hr/>
           <div className="Player-header" key="p-header">投手成績</div>
           <div className="Player-line" key={i++}>
             <div className="Player-cell">
@@ -173,6 +174,7 @@ const Player = () => {
 
       { isBatter(player) ? 
         <>
+          <hr/>
           <div className="Player-header" key="b-header">打者成績</div>
           <div className="Player-line" key={i++}>
             <div className="Player-cell">
