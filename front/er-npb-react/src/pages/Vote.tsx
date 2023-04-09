@@ -24,6 +24,7 @@ const Vote = () => {
       setToken(response.data.token);
       setPlayer1(response.data.player1);
       setPlayer2(response.data.player2);
+      setLoading(false);
     })
     .catch((error : any) => {
       setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
@@ -56,7 +57,6 @@ const Vote = () => {
         setError("サーバーエラーが発生しました。しばらくしてから再度お試しください。");
       }
       pickUp();
-      setLoading(false);
     });
   }
 
