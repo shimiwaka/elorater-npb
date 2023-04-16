@@ -66,6 +66,8 @@ const Ranking = () => {
 
   const setSearchQuery = (query : string) => {
     setQuery(query);
+    setPage(0);
+    getRanking(0)
   }
 
   const prev = () => {
