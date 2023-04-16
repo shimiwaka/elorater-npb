@@ -89,10 +89,12 @@ const Ranking = () => {
   const handleSubmit = (
     e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement>,
   ) => {
+    setPage(0);
     getRanking(0)
   }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Enter') return
+    setPage(0);
     handleSubmit(e)
   }
 
@@ -100,7 +102,7 @@ const Ranking = () => {
     <div>
       <div className="Search-box">
         <input placeholder="選手の名前を入力" onChange={(e) => setSearchQuery(e.target.value)} onKeyDown={handleKeyDown}/>
-        <button onClick={() => getRanking(0)}>検索</button>
+        <button onClick={() => {setPage(0); getRanking(0)}}>検索</button>
       </div>
       <div className="Navigator">
         <button onClick={() => prev()}> &lt; </button>
