@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const targetURL: string = process.env.REACT_APP_BASE_URL || "";
+const counterURL: string = process.env.REACT_APP_COUNTER_URL || "";
 
 const Vote = () => {
   const [token, setToken] = React.useState(null);
@@ -58,6 +59,7 @@ const Vote = () => {
       }
       pickUp();
     });
+    axios.get(counterURL + "er-vote").then((response) => { });
   }
 
   if (loading) {
