@@ -10,6 +10,7 @@ type Player struct {
 	Birth      string         `json:"birth"`
 	BT         string         `json:"bt"`
 	Rate       int            `json:"rate"`
+	Number	   int            `json:"number"`
 	Pitching   []PitchingStat `json:"pitching"`
 	Batting    []BattingStat  `json:"batting"`
 }

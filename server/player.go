@@ -46,6 +46,25 @@ func getPlayerAllStats(db *gorm.DB, id uint) (Player, error) {
 	return player, err
 }
 
+func getPlayerRankedNumber(db *gorm.DB, id uint) int {
+	players := []Player{}
+
+	err := db.Order("rate desc").Find(&players).Error
+	if err != nil {
+		return 0
+	}
+
+	num := 0
+
+	for _, player := range players {
+		num++
+		if player.ID == id {
+			return num
+		}
+	}
+	return 0
+}
+
 func getCareerHighBattingStat(p Player) BattingStat {
 	var score float64
 	var max float64

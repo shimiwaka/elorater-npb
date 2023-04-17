@@ -10,6 +10,7 @@ interface PlayerAllData {
   name: string;
   birth: string;
   bt: string;
+  number: number;
   rate: number;
   pitching: PitchingStat[];
   batting: BattingStat[];
@@ -95,7 +96,7 @@ const Player = () => {
   return (
     <div className="Player">
       <div key="name" className="Header">{player.name}</div>
-      <div key="rate" className="Header">Rate:{player.rate}</div>
+      <div key="rate" className="Header">Rate:{player.rate} ({player.number}位)</div>
       <div key="birth_bt">{player.birth} {player.bt}</div>
 
       { isPitcher(player) ? 
