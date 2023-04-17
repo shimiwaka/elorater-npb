@@ -20,10 +20,10 @@ func main() {
 	router.Handle(rootPath+"/search", setCommonHeader(&searchHandler{}))
 	router.Handle(rootPath+"/ping", &pingHandler{})
 
-	// server := &http.Server{
-	// 	Addr:    ":9999",
-	// 	Handler: router,
-	// }
+	server := &http.Server{
+		Addr:    ":9999",
+		Handler: router,
+	}
 
 	// err := server.ListenAndServe()
 	// if err != nil {
